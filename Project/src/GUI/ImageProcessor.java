@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ImageAnalyzer extends JPanel {
+public class ImageProcessor extends JPanel {
     private BufferedImage img;
     private JLabel label;
     private BufferedImage resizedImage;
@@ -27,10 +27,10 @@ public class ImageAnalyzer extends JPanel {
     private JButton nextButton;
     private ArrayList<File> files;
 
-    public ImageAnalyzer(){
+    public ImageProcessor(){
 
     }
-    public ImageAnalyzer(ArrayList<File> pFiles){
+    public ImageProcessor(ArrayList<File> pFiles){
         files = pFiles;
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -105,7 +105,7 @@ public class ImageAnalyzer extends JPanel {
                     JFrame frame2 = new JFrame("ImageAnalyzer");
                     frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame2.setLayout(new BorderLayout());
-                    frame2.add(new ImageAnalyzer(files));
+                    frame2.add(new ImageProcessor(files));
                     frame2.pack();
                     frame2.setLocationRelativeTo(null);
                     frame2.setVisible(true);

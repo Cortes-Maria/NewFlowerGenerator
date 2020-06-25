@@ -77,7 +77,7 @@ public class ImageChooserWindow {
                 frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame2.setLayout(new BorderLayout());
                 ArrayList<File> images = new ArrayList<File>(Arrays.asList(files));
-                frame2.add(new ImageAnalyzer(images));
+                frame2.add(new ImageProcessor(images));
                 frame2.pack();
                 frame2.setLocationRelativeTo(null);
                 frame2.setVisible(true);
