@@ -1,10 +1,18 @@
 package Greedy;
 
+import ImageManagment.FlowerImage;
+
+import java.util.List;
+
 public class GreedyColorAnalyser {
-   private  Zone petalColorZone;
-   private  Zone centerColorZone;
-   private  Zone petalZone;
-   private  Zone centerZone;
+    private List<FlowerImage> flowers;
+
+    public GreedyColorAnalyser(List<FlowerImage> pFlowers){
+        flowers = pFlowers;
+    }
+
+
+
 
 
 }
