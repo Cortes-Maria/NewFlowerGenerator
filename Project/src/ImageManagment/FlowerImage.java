@@ -13,6 +13,13 @@ public class FlowerImage {
     private List<Pixel> heightPixels;
     private List<Pixel> widthPixels;
 
+    public FlowerImage(){
+        image = null;
+        petal = center = null;
+        petalsQuantity = 0;
+        heightPixels = widthPixels = null;
+    }
+
     public FlowerImage(BufferedImage pImage, Zone pPetal, Zone pCenter, int pPetalsQuantity, List<Pixel> pHeightPixels,List<Pixel> pWidthPixels){
         image = pImage;
         petal = pPetal;
