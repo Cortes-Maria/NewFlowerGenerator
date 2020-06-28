@@ -1,7 +1,8 @@
 package GUI;
 
+import ImageManagment.Pixel;
+
 import java.awt.*;
-import java.util.Map;
 import java.util.Vector;
 
 public class ImageData {

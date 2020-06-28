@@ -1,33 +1,29 @@
 package Greedy;
 
-import java.util.ArrayList;
+import ImageManagment.Pixel;
 
 public class Zone {
-    private int xLowerLimit;
-    private int yLowerLimit;
-    private int xUpperLimit;
-    private int yUpperLimit;
+    private Pixel lowerLimit;
+    private Pixel upperLimit;
 
-    public Zone(int pXLowerLimit, int pYUpperLimit, int pXUpperLimit, int pYLowerLimit){
-        xLowerLimit = pXLowerLimit;
-        yLowerLimit = pYLowerLimit;
-        xUpperLimit = pXUpperLimit;
-        yUpperLimit = pYUpperLimit;
+    public Zone(Pixel pLowerLimit, Pixel pUpperLimit){
+      lowerLimit = pLowerLimit;
+      upperLimit = pUpperLimit;
     }
 
-    public int getxLowerLimit() {
-        return xLowerLimit;
+    public Pixel getLowerLimit() {
+        return lowerLimit;
     }
 
-    public int getyLowerLimit() {
-        return yLowerLimit;
+    public void setLowerLimit(Pixel lowerLimit) {
+        this.lowerLimit = lowerLimit;
     }
 
-    public int getxUpperLimit() {
-        return xUpperLimit;
+    public Pixel getUpperLimit() {
+        return upperLimit;
     }
 
-    public int getyUpperLimit() {
-        return yUpperLimit;
+    public void setUpperLimit(Pixel upperLimit) {
+        this.upperLimit = upperLimit;
     }
 }

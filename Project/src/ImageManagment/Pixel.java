@@ -1,4 +1,4 @@
-package GUI;
+package ImageManagment;
 
 import java.awt.*;
 
