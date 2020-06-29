@@ -26,17 +26,20 @@ public class ImageProcessor extends JPanel {
     private JTextField yCoordinate;
     private JButton nextButton;
     private ArrayList<File> files;
+    private JComboBox<String> comboBox;
 
     public ImageProcessor(){
-
     }
+
     public ImageProcessor(ArrayList<File> pFiles){
         files = pFiles;
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         label = new JLabel();
-        nextButton = new JButton("Siguiente");
+        nextButton = new JButton("Next");
+        comboBox = new JComboBox<String>();
+        setComboBox();
 
         try{
             img = ImageIO.read(files.get(0));
@@ -46,6 +49,9 @@ public class ImageProcessor extends JPanel {
             label.setIcon(imageIcon);
             Image image = imageIcon.getImage();
             resizedImage = toBufferedImage(image);
+            //Gets imageInformation and sets the bufferedImage
+            ImageInformation imageInformation = ImageInformation.getInstance();
+            imageInformation.flowerImage.setImage(resizedImage);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -65,6 +71,7 @@ public class ImageProcessor extends JPanel {
         fields.add(yCoordinate);
         add(fields, gbc);
         add(nextButton, gbc);
+        add(comboBox, gbc);
 
         label.addMouseListener(new MouseAdapter() {
             @Override
@@ -73,7 +80,6 @@ public class ImageProcessor extends JPanel {
                 int locY = MouseInfo.getPointerInfo().getLocation().y;
 
                 if(!isTransparent(resizedImage.getRGB(mouseEvent.getX(), mouseEvent.getY()))){
-
                     int packedInt = resizedImage.getRGB(mouseEvent.getX(), mouseEvent.getY());
                     Color color = new Color(packedInt, true);
                     fields.setBackground(color);
@@ -82,6 +88,7 @@ public class ImageProcessor extends JPanel {
                     blue.setText(Integer.toString(color.getBlue()));
                     xCoordinate.setText(Integer.toString(locX));
                     yCoordinate.setText(Integer.toString(locY));
+
                     ImageData imageData = ImageData.getInstance();
                     imageData.insertPixel(color, locX, locY);
                 }else{
@@ -109,24 +116,23 @@ public class ImageProcessor extends JPanel {
                     frame2.pack();
                     frame2.setLocationRelativeTo(null);
                     frame2.setVisible(true);
-                }else{
+                }else{ //Should open new Window
+
                     /*JComponent comp = (JComponent) actionEvent.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();*/
                     ImageData imageData = ImageData.getInstance();
-                    System.out.println(imageData.getPixelsInfo());
+                    //Insert ImageInformation in ImageData
+                    ImageInformation.setNewInstance();
+
                 }
-                //else abre la siguiente ventana
             }
         });
 
     }
 
     public boolean isTransparent( int pixel ) {
-        if( (pixel>>24) == 0x00 ) {
-            return true;
-        }
-        return false;
+        return (pixel>>24) == 0x00;
     }
 
     public static BufferedImage toBufferedImage(Image img){
@@ -143,6 +149,13 @@ public class ImageProcessor extends JPanel {
 
         // Return the buffered image
         return bImage;
+    }
+
+    public void setComboBox(){
+        comboBox.addItem("Petal Zone");
+        comboBox.addItem("Central Zone");
+        comboBox.addItem("Height Petal");
+        comboBox.addItem("Width Petal");
     }
 
 }

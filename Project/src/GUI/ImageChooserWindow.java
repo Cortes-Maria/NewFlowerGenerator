@@ -33,9 +33,9 @@ public class ImageChooserWindow {
                 JFileChooser chooser = new JFileChooser(f);
                 chooser.setMultiSelectionEnabled(true);
                 chooser.showOpenDialog(null);
-
                 files = chooser.getSelectedFiles();
 
+                //Sets paths text in window
                 if (files.length != 0) {
                     if(files.length == 3){
                         // set the label to the path of the selected directory
