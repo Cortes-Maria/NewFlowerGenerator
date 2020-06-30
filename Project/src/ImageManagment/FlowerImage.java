@@ -2,31 +2,53 @@ package ImageManagment;
 
 import Greedy.Zone;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Vector;
 
 public class FlowerImage {
     private BufferedImage image;
     private Zone petal;
     private Zone center;
     private int petalsQuantity;
-    private List<Pixel> heightPixels;
-    private List<Pixel> widthPixels;
+    private Vector<Pixel> heightPixels;
+    private Vector<Pixel> widthPixels;
+    private int deleteThis;
 
     public FlowerImage(){
         image = null;
-        petal = center = null;
+        petal = new Zone();
+        center = new Zone();
         petalsQuantity = 0;
-        heightPixels = widthPixels = null;
+        heightPixels = new Vector<Pixel>();
+        widthPixels = new Vector<Pixel>();
     }
 
-    public FlowerImage(BufferedImage pImage, Zone pPetal, Zone pCenter, int pPetalsQuantity, List<Pixel> pHeightPixels,List<Pixel> pWidthPixels){
+    public FlowerImage(BufferedImage pImage, Zone pPetal, Zone pCenter, int pPetalsQuantity,
+                       Vector<Pixel> pHeightPixels,Vector<Pixel> pWidthPixels){
         image = pImage;
         petal = pPetal;
         center = pCenter;
         petalsQuantity = pPetalsQuantity;
         heightPixels = pHeightPixels;
         widthPixels = pWidthPixels;
+    }
+
+    public void insertPixelZonePetal(Color color, int x, int y){
+        petal.insertLimit(color, x, y);
+    }
+
+    public void insertPixelZoneCenter(Color color, int x, int y){
+        center.insertLimit(color, x, y);
+    }
+
+    public void insertPixelHeight(Color color, int x, int y){
+        heightPixels.add(new Pixel(color, x, y));
+    }
+
+    public void insertPixelWidth(Color color, int x, int y){
+        widthPixels.add(new Pixel(color, x, y));
     }
 
     public BufferedImage getImage() {
@@ -61,19 +83,19 @@ public class FlowerImage {
         this.petalsQuantity = petalsQuantity;
     }
 
-    public List<Pixel> getHeightPixels() {
+    public Vector<Pixel> getHeightPixels() {
         return heightPixels;
     }
 
-    public void setHeightPixels(List<Pixel> heightPixels) {
+    public void setHeightPixels(Vector<Pixel> heightPixels) {
         this.heightPixels = heightPixels;
     }
 
-    public List<Pixel> getWidthPixels() {
+    public Vector<Pixel> getWidthPixels() {
         return widthPixels;
     }
 
-    public void setWidthPixels(List<Pixel> widthPixels) {
+    public void setWidthPixels(Vector<Pixel> widthPixels) {
         this.widthPixels = widthPixels;
     }
 }

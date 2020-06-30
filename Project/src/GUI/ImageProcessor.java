@@ -1,5 +1,6 @@
 package GUI;
 
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,7 +19,8 @@ public class ImageProcessor extends JPanel {
     private JLabel label;
     private BufferedImage resizedImage;
 
-    private JPanel fields;
+    private JPanel fieldsPixel;
+    private JPanel fieldsInformation;
     private JTextField red;
     private JTextField green;
     private JTextField blue;
@@ -27,6 +29,8 @@ public class ImageProcessor extends JPanel {
     private JButton nextButton;
     private ArrayList<File> files;
     private JComboBox<String> comboBox;
+    private JTextField petalQuantity;
+    private JLabel petalQuantityLabel;
 
     public ImageProcessor(){
     }
@@ -37,9 +41,6 @@ public class ImageProcessor extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         label = new JLabel();
-        nextButton = new JButton("Next");
-        comboBox = new JComboBox<String>();
-        setComboBox();
 
         try{
             img = ImageIO.read(files.get(0));
@@ -56,22 +57,37 @@ public class ImageProcessor extends JPanel {
             ex.printStackTrace();
         }
 
+        nextButton = new JButton("Next");
+        comboBox = new JComboBox<String>();
+        petalQuantityLabel = new JLabel("Petal Quantity");
+        setComboBox();
+
         add(label,gbc);
-        fields = new JPanel();
-        fields.setBorder(new EmptyBorder(5, 5, 5, 5));
         red = new JTextField(3);
         green = new JTextField(3);
         blue = new JTextField(3);
         xCoordinate = new JTextField(3);
         yCoordinate = new JTextField(3);
-        fields.add(red);
-        fields.add(green);
-        fields.add(blue);
-        fields.add(xCoordinate);
-        fields.add(yCoordinate);
-        add(fields, gbc);
+
+        fieldsPixel = new JPanel();
+        petalQuantity = new JTextField(3);
+
+        fieldsPixel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        fieldsPixel.add(red);
+        fieldsPixel.add(green);
+        fieldsPixel.add(blue);
+        fieldsPixel.add(xCoordinate);
+        fieldsPixel.add(yCoordinate);
+
+        fieldsInformation = new JPanel();
+        fieldsInformation.setBorder(new EmptyBorder(5,5,5,5));
+        fieldsInformation.add(petalQuantityLabel);
+        fieldsInformation.add(petalQuantity);
+        fieldsInformation.add(comboBox);
+
+        add(fieldsPixel, gbc);
+        add(fieldsInformation, gbc);
         add(nextButton, gbc);
-        add(comboBox, gbc);
 
         label.addMouseListener(new MouseAdapter() {
             @Override
@@ -82,17 +98,16 @@ public class ImageProcessor extends JPanel {
                 if(!isTransparent(resizedImage.getRGB(mouseEvent.getX(), mouseEvent.getY()))){
                     int packedInt = resizedImage.getRGB(mouseEvent.getX(), mouseEvent.getY());
                     Color color = new Color(packedInt, true);
-                    fields.setBackground(color);
+                    fieldsPixel.setBackground(color);
                     red.setText(Integer.toString(color.getRed()));
                     green.setText(Integer.toString(color.getGreen()));
                     blue.setText(Integer.toString(color.getBlue()));
                     xCoordinate.setText(Integer.toString(locX));
                     yCoordinate.setText(Integer.toString(locY));
 
-                    ImageData imageData = ImageData.getInstance();
-                    imageData.insertPixel(color, locX, locY);
+                    insertPixel(color, locX, locY);
                 }else{
-                    fields.setBackground(new Color(255,255,255));
+                    fieldsPixel.setBackground(new Color(255,255,255));
                     red.setText("");
                     green.setText("");
                     blue.setText("");
@@ -105,25 +120,34 @@ public class ImageProcessor extends JPanel {
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                //Adds the number of petals in the flower
+                ImageInformation imageInformation = ImageInformation.getInstance();
+                imageInformation.flowerImage.setPetalsQuantity(Integer.parseInt(petalQuantity.getText()));
+
+                //Insert ImageInformation in ImageData
+                ImageData imageData = ImageData.getInstance();
+                imageData.addFlowerImage(imageInformation.getFlowerImage());
+                //System.out.println("Flower");
+                //System.out.println("Size: " + imageData.flowerImages.size());
+
+                //Deletes the data in ImageInformation
+                ImageInformation.setNewInstance();
+
                 if(files.size() >= 1){
                     JComponent comp = (JComponent) actionEvent.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();
-                    JFrame frame2 = new JFrame("ImageAnalyzer");
-                    frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frame2.setLayout(new BorderLayout());
-                    frame2.add(new ImageProcessor(files));
-                    frame2.pack();
-                    frame2.setLocationRelativeTo(null);
-                    frame2.setVisible(true);
+                    JFrame nextFrame = new JFrame("ImageAnalyzer");
+                    nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    nextFrame.setLayout(new BorderLayout());
+                    nextFrame.add(new ImageProcessor(files));
+                    nextFrame.pack();
+                    nextFrame.setLocationRelativeTo(null);
+                    nextFrame.setVisible(true);
                 }else{ //Should open new Window
-
                     /*JComponent comp = (JComponent) actionEvent.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();*/
-                    ImageData imageData = ImageData.getInstance();
-                    //Insert ImageInformation in ImageData
-                    ImageInformation.setNewInstance();
 
                 }
             }
@@ -158,4 +182,23 @@ public class ImageProcessor extends JPanel {
         comboBox.addItem("Width Petal");
     }
 
+    public void insertPixel(Color color, int x, int y){
+        String cbStr = (String) comboBox.getSelectedItem();
+        ImageInformation imageInformation = ImageInformation.getInstance();
+        if(cbStr.equals("Petal Zone")){
+            //System.out.println("Petal Zone" + ImageData.getInstance().flowerImages.size());
+            imageInformation.flowerImage.insertPixelZonePetal(color, x, y);
+        }else if(cbStr.equals("Central Zone")){
+            //System.out.println("Central Zone" + ImageData.getInstance().flowerImages.size());
+            imageInformation.flowerImage.insertPixelZoneCenter(color, x, y);
+        }else if(cbStr.equals("Height Petal")){
+            //System.out.println("Height Petal" + ImageData.getInstance().flowerImages.size());
+            imageInformation.flowerImage.insertPixelHeight(color, x, y);
+        }else if(cbStr.equals("Width Petal")){
+            //System.out.println("Width Petal" + ImageData.getInstance().flowerImages.size());
+            imageInformation.flowerImage.insertPixelWidth(color, x, y);
+        }else{
+            //Error dialog
+        }
+    }
 }
