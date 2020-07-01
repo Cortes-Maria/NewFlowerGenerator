@@ -18,6 +18,10 @@ public class ImageInformation {
         return instance;
     }
 
+    public FlowerImage getFlowerImage(){
+        return flowerImage;
+    }
+
     public static void setNewInstance(){
         instance = new ImageInformation();
     }

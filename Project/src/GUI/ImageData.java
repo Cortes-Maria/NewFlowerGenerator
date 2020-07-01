@@ -19,9 +19,7 @@ public class ImageData {
        return instance;
     }
 
-    public void insertPixel(Color pColor,int xCoordinate, int yCoordinate){
-        Pixel newPixel = new Pixel(pColor,xCoordinate, yCoordinate);
+    public void addFlowerImage(FlowerImage flowerImage){
+        flowerImages.add(flowerImage);
     }
-
-
 }
