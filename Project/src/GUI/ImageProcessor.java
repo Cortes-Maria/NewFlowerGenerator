@@ -1,6 +1,5 @@
 package GUI;
 
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -53,6 +52,7 @@ public class ImageProcessor extends JPanel {
             //Gets imageInformation and sets the bufferedImage
             ImageInformation imageInformation = ImageInformation.getInstance();
             imageInformation.flowerImage.setImage(resizedImage);
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -93,6 +93,7 @@ public class ImageProcessor extends JPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 int locX = MouseInfo.getPointerInfo().getLocation().x;
+
                 int locY = MouseInfo.getPointerInfo().getLocation().y;
 
                 if(!isTransparent(resizedImage.getRGB(mouseEvent.getX(), mouseEvent.getY()))){
@@ -102,10 +103,11 @@ public class ImageProcessor extends JPanel {
                     red.setText(Integer.toString(color.getRed()));
                     green.setText(Integer.toString(color.getGreen()));
                     blue.setText(Integer.toString(color.getBlue()));
-                    xCoordinate.setText(Integer.toString(locX));
-                    yCoordinate.setText(Integer.toString(locY));
+                    xCoordinate.setText(Integer.toString(mouseEvent.getX()));
+                    yCoordinate.setText(Integer.toString(mouseEvent.getY()));
+                    //System.out.println("LocX: "+ locX + " LocY: "+locY+" MouseX: " + mouseEvent.getX()+" MouseY: "+mouseEvent.getY());
 
-                    insertPixel(color, locX, locY);
+                    insertPixel(color,mouseEvent.getX(),mouseEvent.getY());
                 }else{
                     fieldsPixel.setBackground(new Color(255,255,255));
                     red.setText("");
@@ -124,9 +126,9 @@ public class ImageProcessor extends JPanel {
                 ImageInformation imageInformation = ImageInformation.getInstance();
                 imageInformation.flowerImage.setPetalsQuantity(Integer.parseInt(petalQuantity.getText()));
 
-                //Insert ImageInformation in ImageData
-                ImageData imageData = ImageData.getInstance();
-                imageData.addFlowerImage(imageInformation.getFlowerImage());
+                //Insert ImageInformation in Flowers
+                Flowers flowers = Flowers.getInstance();
+                flowers.addFlowerImage(imageInformation.getFlowerImage());
                 //System.out.println("Flower");
                 //System.out.println("Size: " + imageData.flowerImages.size());
 

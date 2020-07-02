@@ -21,7 +21,7 @@ public class Zone {
         if(lowerLimit == null){
             setLowerLimit(pixel);
         }else{
-            if(lowerLimit.yCoordinate <= pixel.yCoordinate){
+            if(lowerLimit.yCoordinate >= pixel.yCoordinate){
                 setUpperLimit(pixel);
             }else{
                 setUpperLimit(lowerLimit);
