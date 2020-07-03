@@ -45,7 +45,7 @@ public class FlowerImage implements ICONSTANTS{
         int yLimit = measures[HEIGHT_POS] + petal.getUpperLimit().yCoordinate;
         for(int x=petal.getUpperLimit().xCoordinate; x<=xLimit;x++){
             for(int y=petal.getUpperLimit().yCoordinate;y<=yLimit;y++){
-                Color color = new Color(image.getRGB(x,y));
+                Color color = new Color(image.getRGB(x,y),true);
                 Pixel pixel = new Pixel(color,x,y);
                 petalZonePixels.add(pixel);
             }
@@ -60,7 +60,7 @@ public class FlowerImage implements ICONSTANTS{
 
         for(int x=center.getUpperLimit().xCoordinate; x<=xLimit;x++){
             for(int y=center.getUpperLimit().yCoordinate;y<=yLimit;y++){
-                Color color = new Color(image.getRGB(x,y));
+                Color color = new Color(image.getRGB(x,y),true);
                 Pixel pixel = new Pixel(color,x,y);
                 centerZonePixels.add(pixel);
             }
