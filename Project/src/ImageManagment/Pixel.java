@@ -16,4 +16,7 @@ public class Pixel {
         yCoordinate = pYCoordinate;
         color = pColor;
     }
+    public void printPixel(){
+        System.out.println("X: " + xCoordinate + " Y: " + yCoordinate + " , " + "Color: " + color.getRGB());
+    }
 }

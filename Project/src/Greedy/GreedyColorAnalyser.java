@@ -15,6 +15,7 @@ public class GreedyColorAnalyser implements ICONSTANTS{
     public GreedyColorAnalyser(){
         optimalPixelsPETAL = new Vector<Vector<Pixel>>();
         optimalPixelsCENTER = new Vector<Vector<Pixel>>();
+        extractOptimalPixels();
     }
 
     private void extractOptimalPixels(){
@@ -51,6 +52,11 @@ public class GreedyColorAnalyser implements ICONSTANTS{
         }
         else return false;
     }
+    public void printPixelVector(Vector<Pixel> pVector){
+        for(Pixel pixel: pVector){
+            pixel.printPixel();
+        }
+    }
 
 
     //convert a gamma encoded RGB to a linear value
@@ -74,5 +80,11 @@ public class GreedyColorAnalyser implements ICONSTANTS{
 
     }
 
+    public Vector<Vector<Pixel>> getOptimalPixelsPETAL() {
+        return optimalPixelsPETAL;
+    }
 
+    public Vector<Vector<Pixel>> getOptimalPixelsCENTER() {
+        return optimalPixelsCENTER;
+    }
 }

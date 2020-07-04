@@ -1,5 +1,7 @@
 package GUI;
 
+import Greedy.GreedyColorAnalyser;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -146,7 +148,13 @@ public class ImageProcessor extends JPanel {
                     nextFrame.pack();
                     nextFrame.setLocationRelativeTo(null);
                     nextFrame.setVisible(true);
-                }else{ //Should open new Window
+                }else{
+                    GreedyColorAnalyser greedyPrueba = new GreedyColorAnalyser();
+                    System.out.println("Pixeles Optimos del pétalo");
+                    greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsPETAL().firstElement());
+                    System.out.println("Pixeles Optimos del centro");
+                    greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsCENTER().firstElement());
+                    //Should open new Window
                     /*JComponent comp = (JComponent) actionEvent.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();*/
