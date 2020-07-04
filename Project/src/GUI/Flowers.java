@@ -1,25 +1,25 @@
 package GUI;
 
 import ImageManagment.FlowerImage;
-import ImageManagment.Pixel;
-import java.awt.*;
+
 import java.util.Vector;
 
-public class ImageData {
-    private static ImageData instance;
+public class Flowers {
+    private static Flowers instance;
     public Vector<FlowerImage> flowerImages;
 
-    private ImageData(){
+    private Flowers(){
         flowerImages = new Vector<FlowerImage>();
     }
 
-    public static ImageData getInstance(){
+    public static Flowers getInstance(){
        if(instance==null)
-           instance = new ImageData();
+           instance = new Flowers();
        return instance;
     }
 
     public void addFlowerImage(FlowerImage flowerImage){
+        flowerImage.extractPixels();
         flowerImages.add(flowerImage);
     }
 }
