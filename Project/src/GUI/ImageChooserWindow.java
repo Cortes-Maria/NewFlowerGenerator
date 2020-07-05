@@ -22,7 +22,7 @@ public class ImageChooserWindow {
     private JLabel path2;
     private JLabel path3;
     public File[] files;
-    public static String flowerWindowPath = "C:\\Users\\Ixel\\Desktop\\flowersWindow";
+    public static String flowerWindowPath = "/home/ixel/Desktop/Flowers";
 
     public ImageChooserWindow() {
         setWindow();
@@ -88,13 +88,13 @@ public class ImageChooserWindow {
     public void setWindow(){
         // Import ImageIcon
         ImageIcon iconLogo1 =
-                new ImageIcon(new ImageIcon("C:\\Users\\Ixel\\Desktop\\flowersWindow\\flower1.png").
+                new ImageIcon(new ImageIcon(flowerWindowPath + "/flower1.png").
                         getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon iconLogo2 =
-                new ImageIcon(new ImageIcon("C:\\Users\\Ixel\\Desktop\\flowersWindow\\flower2.png").
+                new ImageIcon(new ImageIcon(flowerWindowPath + "/flower2.png").
                         getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon iconLogo3 =
-                new ImageIcon(new ImageIcon("C:\\Users\\Ixel\\Desktop\\flowersWindow\\flower3.png").
+                new ImageIcon(new ImageIcon(flowerWindowPath + "/flower3.png").
                         getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         // In init() method write this code
         image1.setIcon(iconLogo1);

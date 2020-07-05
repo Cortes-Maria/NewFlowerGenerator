@@ -1,6 +1,8 @@
 package GUI;
 
+import Generic.GenericAlgorithmTable;
 import Greedy.GreedyColorAnalyser;
+import ImageManagment.FlowerImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -151,13 +153,23 @@ public class ImageProcessor extends JPanel {
                 }else{
                     GreedyColorAnalyser greedyPrueba = new GreedyColorAnalyser();
                     System.out.println("Pixeles Optimos del pétalo");
-                    greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsPETAL().firstElement());
+                    //greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsPETAL().firstElement());
                     System.out.println("Pixeles Optimos del centro");
-                    greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsCENTER().firstElement());
+                    //greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsCENTER().firstElement());
                     //Should open new Window
                     /*JComponent comp = (JComponent) actionEvent.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();*/
+
+                    GenericAlgorithmTable algorithmTable = new GenericAlgorithmTable();
+                    Flowers flowersGA = Flowers.getInstance();
+                    for(FlowerImage flowerImage : flowersGA.flowerImages){
+                        algorithmTable.insertDistributionCenter(flowerImage.getCenterZonePixels());
+                        algorithmTable.insertDistributionPetal(flowerImage.getPetalZonePixels());
+                    }
+                    algorithmTable.setPercentages();
+                    algorithmTable.setMinMaxValues();
+                    algorithmTable.printTable();
 
                 }
             }
