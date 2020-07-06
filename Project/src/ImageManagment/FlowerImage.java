@@ -1,7 +1,5 @@
 package ImageManagment;
 
-import Greedy.Zone;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
