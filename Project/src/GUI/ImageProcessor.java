@@ -1,6 +1,6 @@
 package GUI;
 
-import Generic.GenericAlgorithmTable;
+import Genetic.DistributionTable;
 import Greedy.GreedyColorAnalyser;
 import ImageManagment.FlowerImage;
 
@@ -161,7 +161,7 @@ public class ImageProcessor extends JPanel {
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();*/
 
-                    GenericAlgorithmTable algorithmTable = new GenericAlgorithmTable();
+                    DistributionTable algorithmTable = new DistributionTable();
                     Flowers flowersGA = Flowers.getInstance();
                     for(FlowerImage flowerImage : flowersGA.flowerImages){
                         algorithmTable.insertDistributionCenter(flowerImage.getCenterZonePixels());

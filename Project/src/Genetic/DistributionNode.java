@@ -1,13 +1,11 @@
-package Generic;
+package Genetic;
 
-import java.awt.*;
-
-public class GenericNode {
+public class DistributionNode {
     int frequency;
     float percentage;
     int min, max;
 
-    GenericNode(){
+    DistributionNode(){
         frequency = 1;
         percentage = 0;
         min = 0;

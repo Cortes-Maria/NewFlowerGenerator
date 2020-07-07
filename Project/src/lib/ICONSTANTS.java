@@ -7,5 +7,5 @@ public interface ICONSTANTS {
     int GROUPS_QUANTITY = 16;
     float COLOR_BASE = 441.6729559F;
     float PERCENTAGE_COLOR = 0.1F;
-    int MAX_VALUE = 65536;
+    int MAX_CHROMOSONE_VALUE = 65536;
 }

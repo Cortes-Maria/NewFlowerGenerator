@@ -1,25 +1,21 @@
-package Generic;
+package Genetic;
 
 import ImageManagment.Pixel;
-import javafx.util.Pair;
 
 import java.awt.*;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import lib.ICONSTANTS;
 
-public class GenericAlgorithmTable implements ICONSTANTS{
-    HashMap<Color, GenericNode> distributionPetal;
-    HashMap<Color, GenericNode> distributionCenter;
+public class DistributionTable implements ICONSTANTS{
+    HashMap<Color, DistributionNode> distributionPetal;
+    HashMap<Color, DistributionNode> distributionCenter;
     int totalPetal;
     int totalCenter;
 
-    public GenericAlgorithmTable(){
+    public DistributionTable(){
         distributionPetal = new HashMap<>();
         distributionCenter = new HashMap<>();
         totalCenter = totalPetal = 0;
@@ -49,7 +45,7 @@ public class GenericAlgorithmTable implements ICONSTANTS{
             }
         }
         //System.out.println("New added");
-        distributionPetal.put(color, new GenericNode());
+        distributionPetal.put(color, new DistributionNode());
         totalPetal++;
     }
 
@@ -63,7 +59,7 @@ public class GenericAlgorithmTable implements ICONSTANTS{
                 }
             }
         }
-        distributionCenter.put(color, new GenericNode());
+        distributionCenter.put(color, new DistributionNode());
         totalCenter++;
     }
 
@@ -105,14 +101,14 @@ public class GenericAlgorithmTable implements ICONSTANTS{
         for(Color petalColor : distributionPetal.keySet()){
             float percentage = distributionPetal.get(petalColor).getPercentage();
             distributionPetal.get(petalColor).setMin(minValue);
-            minValue += (int) (percentage*MAX_VALUE);
+            minValue += (int) (percentage*MAX_CHROMOSONE_VALUE);
             distributionPetal.get(petalColor).setMax(minValue - 1);
         }
         minValue = 0;
         for(Color petalColor : distributionCenter.keySet()){
             float percentage = distributionCenter.get(petalColor).getPercentage();
             distributionCenter.get(petalColor).setMin(minValue);
-            minValue += (int) (percentage*MAX_VALUE);
+            minValue += (int) (percentage*MAX_CHROMOSONE_VALUE);
             distributionCenter.get(petalColor).setMax(minValue - 1);
         }
 
@@ -128,19 +124,19 @@ public class GenericAlgorithmTable implements ICONSTANTS{
 
     //***************************Setters and Getters **************************************************
 
-    public HashMap<Color, GenericNode> getDistributionPetal() {
+    public HashMap<Color, DistributionNode> getDistributionPetal() {
         return distributionPetal;
     }
 
-    public void setDistributionPetal(HashMap<Color, GenericNode> distributionPetal) {
+    public void setDistributionPetal(HashMap<Color, DistributionNode> distributionPetal) {
         this.distributionPetal = distributionPetal;
     }
 
-    public HashMap<Color, GenericNode> getDistributionCenter() {
+    public HashMap<Color, DistributionNode> getDistributionCenter() {
         return distributionCenter;
     }
 
-    public void setDistributionCenter(HashMap<Color, GenericNode> distributionCenter) {
+    public void setDistributionCenter(HashMap<Color, DistributionNode> distributionCenter) {
         this.distributionCenter = distributionCenter;
     }
 
