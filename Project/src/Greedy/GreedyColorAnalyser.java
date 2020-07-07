@@ -5,7 +5,6 @@ import ImageManagment.FlowerImage;
 import ImageManagment.Pixel;
 import lib.ICONSTANTS;
 import java.awt.*;
-import java.util.List;
 import java.util.Vector;
 
 public class GreedyColorAnalyser implements ICONSTANTS{
