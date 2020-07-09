@@ -12,8 +12,8 @@ import java.util.Vector;
 public class GeneticAlgorithm implements ICONSTANTS {
     public Vector<Population> centerPopulation;
     public Vector<Population> petalPopulation;
-    public Vector<Integer> aptPetal;
-    public Vector<Integer> aptCenter;
+    public Vector<Vector<Integer>> aptPetal;
+    public Vector<Vector<Integer>> aptCenter;
 
     public GeneticAlgorithm(){
         aptPetal = new Vector<>();
@@ -26,6 +26,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
         Random rand = new Random();
         for(int i=0; i<distributionTable.distributionPetal.size(); i++){
             petalPopulation.add(new Population());
+            aptPetal.add(new Vector<>());
             for(int j=0; j<POPULATION_SIZE; j++){
                 int individual = rand.nextInt(MAX_CHROMOSOME_VALUE + 1);
                 Color chromosomeColor = distributionTable.distributionPetal.elementAt(i).getValueOf(individual);
@@ -33,7 +34,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
                     Color mainColor = distributionTable.distributionPetal.elementAt(i).mainColor();
                     if(isMainColor(mainColor,chromosomeColor)){
                         //aptPetal.add(chromosomeColor);
-                        aptPetal.add(individual);
+                        aptPetal.elementAt(i).add(individual);
                         continue;
                     }
                     float similarity = distributionTable.similarity(mainColor, chromosomeColor);
@@ -54,7 +55,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
                     Color mainColor = distributionTable.distributionCenter.get(i).mainColor();
                     if(isMainColor(mainColor,chromosomeColor)){
                         //aptCenter.add(chromosomeColor);
-                        aptCenter.add(individual);
+                        aptCenter.elementAt(i).add(individual);
                         continue;
                     }
                     float similarity = distributionTable.similarity(mainColor, chromosomeColor);
@@ -72,7 +73,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
                 if(isFitness(value, distributionTable.distributionPetal.elementAt(i))){
                     System.out.println("Added P");
                     //aptPetal.add(distributionTable.distributionPetal.elementAt(i).getValueOf(value));
-                    aptPetal.add(value);
+                    aptPetal.elementAt(i).add(value);
                 }
             }
         }
@@ -81,7 +82,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
                 if(isFitness(value, distributionTable.distributionCenter.elementAt(i))){
                     System.out.println("Added C");
                     //aptCenter.add(distributionTable.distributionCenter.elementAt(i).getValueOf(value));
-                    aptCenter.add(value);
+                    aptCenter.elementAt(i).add(value);
                 }
             }
         }
