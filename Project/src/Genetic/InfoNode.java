@@ -1,15 +1,22 @@
 package Genetic;
 
-public class DistributionNode {
+public class InfoNode {
     int frequency;
     float percentage;
     int min, max;
 
-    DistributionNode(){
+    InfoNode(){
         frequency = 1;
         percentage = 0;
         min = 0;
         max = 0;
+    }
+
+    public boolean isValue(int num){
+        if(num>=min && num<=max){
+            return true;
+        }
+        return false;
     }
 
     public void addToFrequency(){
