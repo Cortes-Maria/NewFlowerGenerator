@@ -47,6 +47,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
         rand = new Random();
         for(int i=0; i<distributionTable.distributionCenter.size(); i++){
             centerPopulation.add(new Population());
+            aptCenter.add(new Vector<>());
             for(int j=0; j<POPULATION_SIZE; j++){
                 int individual = rand.nextInt(MAX_CHROMOSOME_VALUE + 1);
                 //System.out.println(individual);
