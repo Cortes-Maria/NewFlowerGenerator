@@ -181,10 +181,10 @@ public class ImageProcessor extends JPanel {
                     GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
                     geneticAlgorithm.generatePopulation(algorithmTable);
                     //geneticAlgorithm.printPopulation();
-                    System.out.println(geneticAlgorithm.aptPetal.size());
+                    //System.out.println(geneticAlgorithm.aptPetal.size());
 
                     geneticAlgorithm.evaluatePopulation(algorithmTable);
-                    System.out.println(geneticAlgorithm.aptPetal.size());
+                    //System.out.println(geneticAlgorithm.aptPetal.size());
                     //System.out.println(geneticAlgorithm.aptCenter.size());
 
 
