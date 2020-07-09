@@ -12,5 +12,4 @@ public interface ICONSTANTS {
     int POPULATION_SIZE = 10;
     int CHROMOSOMES_BITS = 16;
     float MUTATION_PERCENTAGE = 0.05F;
-    int BIT_MASK = 16;
 }

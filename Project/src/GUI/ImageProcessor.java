@@ -172,19 +172,18 @@ public class ImageProcessor extends JPanel {
                     for(Vector<Pixel> pixelVector : greedyPrueba.getOptimalPixelsCENTER()){
                         algorithmTable.insertDistributionCenter(pixelVector);
                     }
-                    algorithmTable.setPercentages();
-                    algorithmTable.setMinMaxValues();
-                    algorithmTable.setMainColor();
+                    algorithmTable.setTableValues();
                     algorithmTable.printTable();
 
 
                     GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-                    geneticAlgorithm.generatePopulation(algorithmTable);
+                    geneticAlgorithm.generatePopulation();
                     //geneticAlgorithm.printPopulation();
-                    //System.out.println(geneticAlgorithm.aptPetal.size());
 
                     geneticAlgorithm.evaluatePopulation(algorithmTable);
                     //System.out.println(geneticAlgorithm.aptPetal.size());
+
+                    geneticAlgorithm.printPopulation(algorithmTable);
                     //System.out.println(geneticAlgorithm.aptCenter.size());
 
 
