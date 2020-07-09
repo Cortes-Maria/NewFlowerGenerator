@@ -1,8 +1,10 @@
 package GUI;
 
 import Genetic.DistributionTable;
+import Genetic.GeneticAlgorithm;
 import Greedy.GreedyColorAnalyser;
 import ImageManagment.FlowerImage;
+import ImageManagment.Pixel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class ImageProcessor extends JPanel {
     private BufferedImage img;
@@ -152,9 +155,9 @@ public class ImageProcessor extends JPanel {
                     nextFrame.setVisible(true);
                 }else{
                     GreedyColorAnalyser greedyPrueba = new GreedyColorAnalyser();
-                    System.out.println("Pixeles Optimos del pétalo");
+                    //System.out.println("Pixeles Optimos del pétalo");
                     //greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsPETAL().firstElement());
-                    System.out.println("Pixeles Optimos del centro");
+                    //System.out.println("Pixeles Optimos del centro");
                     //greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsCENTER().firstElement());
                     //Should open new Window
                     /*JComponent comp = (JComponent) actionEvent.getSource();
@@ -162,14 +165,28 @@ public class ImageProcessor extends JPanel {
                     win.dispose();*/
 
                     DistributionTable algorithmTable = new DistributionTable();
-                    Flowers flowersGA = Flowers.getInstance();
-                    for(FlowerImage flowerImage : flowersGA.flowerImages){
-                        algorithmTable.insertDistributionCenter(flowerImage.getCenterZonePixels());
-                        algorithmTable.insertDistributionPetal(flowerImage.getPetalZonePixels());
+
+                    for(Vector<Pixel> pixelVector : greedyPrueba.getOptimalPixelsPETAL()){
+                        algorithmTable.insertDistributionPetal(pixelVector);
+                    }
+                    for(Vector<Pixel> pixelVector : greedyPrueba.getOptimalPixelsCENTER()){
+                        algorithmTable.insertDistributionCenter(pixelVector);
                     }
                     algorithmTable.setPercentages();
                     algorithmTable.setMinMaxValues();
+                    algorithmTable.setMainColor();
                     algorithmTable.printTable();
+
+
+                    GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
+                    geneticAlgorithm.generatePopulation(algorithmTable);
+                    //geneticAlgorithm.printPopulation();
+                    System.out.println(geneticAlgorithm.aptPetal.size());
+
+                    geneticAlgorithm.evaluatePopulation(algorithmTable);
+                    System.out.println(geneticAlgorithm.aptPetal.size());
+                    //System.out.println(geneticAlgorithm.aptCenter.size());
+
 
                 }
             }
