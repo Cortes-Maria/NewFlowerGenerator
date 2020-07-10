@@ -9,80 +9,48 @@ import java.util.Vector;
 import lib.ICONSTANTS;
 
 public class DistributionTable implements ICONSTANTS{
-    ColorNode distributionPetal;
-    ColorNode distributionCenter;
-    int totalPetal;
-    int totalCenter;
+    ColorNode distribution;
+    int total;
 
     public DistributionTable(){
-        distributionPetal = new ColorNode();
-        distributionCenter = new ColorNode();
-        totalCenter = 0;
-        totalPetal = 0;
+       distribution = new ColorNode();
+       total = 0;
     }
 
-    public void insertDistributionPetal(Vector<Pixel> flowerPixels){
+    public void insertDistribution(Vector<Pixel> flowerPixels){
         for(Pixel pix : flowerPixels){
-            distributionPetal.insertColor(pix.color);
-            totalPetal++;
-        }
-    }
-
-    public void insertDistributionCenter(Vector<Pixel> flowerPixels){
-        for(Pixel pix : flowerPixels){
-            distributionCenter.insertColor(pix.color);
-            totalCenter++;
+            distribution.insertColor(pix.color);
+            total++;
         }
     }
 
     public void setTableValues(){
-        distributionPetal.setPercentages(totalPetal);
-        distributionCenter.setPercentages(totalCenter);
-        distributionPetal.setMinMaxValue();
-        distributionCenter.setMinMaxValue();
+        distribution.setPercentages(total);
+        distribution.setMinMaxValue();
     }
 
     public void printTable(){
-        //System.out.println(this.totalCenter);
-        System.out.println("Center colors");
-        distributionCenter.printNode();
-        System.out.println();
-        System.out.println("Petal colors");
-        distributionPetal.printNode();
-        System.out.println();
+        //System.out.println(this.total);
+        System.out.println("Colors");
+        distribution.printNode();
+
     }
 
     //***************************Setters and Getters ******************************************
 
-    public ColorNode getDistributionPetal() {
-        return distributionPetal;
+    public ColorNode getDistribution() {
+        return distribution;
     }
 
-    public void setDistributionPetal(ColorNode distributionPetal) {
-        this.distributionPetal = distributionPetal;
+    public void setDistribution(ColorNode distribution) {
+        this.distribution = distribution;
     }
 
-    public ColorNode getDistributionCenter() {
-        return distributionCenter;
+    public int getTotal() {
+        return total;
     }
 
-    public void setDistributionCenter(ColorNode distributionCenter) {
-        this.distributionCenter = distributionCenter;
-    }
-
-    public int getTotalPetal() {
-        return totalPetal;
-    }
-
-    public void setTotalPetal(int totalPetal) {
-        this.totalPetal = totalPetal;
-    }
-
-    public int getTotalCenter() {
-        return totalCenter;
-    }
-
-    public void setTotalCenter(int totalCenter) {
-        this.totalCenter = totalCenter;
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

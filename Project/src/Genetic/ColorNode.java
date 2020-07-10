@@ -28,7 +28,7 @@ public class ColorNode implements ICONSTANTS {
             float distance = (float) Math.sqrt(Math.pow(color1.getRed()-color2.getRed(),2) +
                     Math.pow(color1.getGreen()-color2.getGreen(),2) +
                     Math.pow(color1.getBlue()-color2.getBlue(),2));
-            if(distance/COLOR_BASE <= PERCENTAGE_COLOR){
+            if(distance/COLOR_BASE <= DISTRIBUTION_COLOR_PERCENTAGE){
                 return true;
             }
         }

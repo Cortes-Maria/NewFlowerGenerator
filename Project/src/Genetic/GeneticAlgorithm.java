@@ -1,67 +1,54 @@
 package Genetic;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import lib.ICONSTANTS;
 
 import javax.swing.plaf.IconUIResource;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
+
 import java.util.Vector;
 
 public class GeneticAlgorithm implements ICONSTANTS {
-    public Vector<Integer> centerPopulation;
-    public Vector<Integer> petalPopulation;
-    public Vector<Integer> aptPetal;
-    public Vector<Integer> aptCenter;
+    private Vector<Integer> fitPopulation;
+    private DistributionTable distributionTable;
+    private boolean pause;
+    public GeneticAlgorithm(DistributionTable pDistributionTable){
+        fitPopulation = new Vector<Integer>();
+        distributionTable = pDistributionTable;
+        pause = false;
 
-    public GeneticAlgorithm(){
-        aptPetal = new Vector<>();
-        aptCenter = new Vector<>();
-        petalPopulation = new Vector<>();
-        centerPopulation = new Vector<>();
     }
 
-    public void generatePopulation(){
+    public Vector<Integer> generatePopulation(){
+        Vector<Integer> population = new Vector<Integer>();
         Random rand = new Random();
         int individual = 0;
-        for(int j=0; j<POPULATION_SIZE; j++){
+        for(int j=0; j<INITIAL_POPULATION_SIZE; j++){
             individual = rand.nextInt(MAX_CHROMOSOME_VALUE + 1);
-            petalPopulation.add(individual);
+            population.add(individual);
         }
-        rand = new Random();
-        for(int j=0; j<POPULATION_SIZE; j++){
-            individual = rand.nextInt(MAX_CHROMOSOME_VALUE + 1);
-            centerPopulation.add(individual);
-        }
+        return population;
     }
 
-    public void evaluatePopulation(DistributionTable distributionTable){
-        for(int value : centerPopulation){
-            if(isFitness(value, distributionTable.distributionCenter)){
-                aptCenter.add(value);
-            }
-        }
-        for(int value : petalPopulation){
-            if(isFitness(value, distributionTable.distributionPetal)){
-                aptPetal.add(value);
+    public void evaluatePopulation(Vector<Integer> pPopulation){
+        for(int individual : pPopulation){
+            if(isFitness(individual, distributionTable.distribution)){
+                fitPopulation.add(individual);
             }
         }
     }
 
-    public boolean isFitness(int fitnessValue, ColorNode colorNode){
-        if(colorNode.isMainColor(fitnessValue)){
+    public boolean isFitness(int individual, ColorNode colorNode){
+        if(colorNode.isMainColor(individual)){
             return true;
-        }else if(colorNode.getSimilarity(fitnessValue) <= APT_PERCENTAGE){
-            return true;
-        }
-        return false;
+        }else return colorNode.getSimilarity(individual) <= APT_PERCENTAGE;
     }
 
 
-    public void printPopulation(DistributionTable distributionTable){
-        for(int value : petalPopulation){
-            distributionTable.distributionPetal.printColor(value);
+    public void printPopulation(Vector<Integer> pPopulation){
+        for(int individual : pPopulation){
+            distributionTable.distribution.printColor(individual);
         }
     }
 
@@ -91,5 +78,62 @@ public class GeneticAlgorithm implements ICONSTANTS {
             individual = Integer.parseInt(mutatedIndividual,2);
         }
         return individual;
+    }
+
+    public Vector<Integer> newGeneration(Vector<Integer> pPopulation){
+        Random rand = new Random();
+        int childQuantity = pPopulation.size();
+        evaluatePopulation(pPopulation);
+        pPopulation.clear();
+        while(childQuantity>0){
+            int firstParentIndex = rand.nextInt(fitPopulation.size()-1);
+            int secondParentIndex = rand.nextInt(fitPopulation.size()-1);
+            Integer firstParent = fitPopulation.get(firstParentIndex);
+            Integer secondParent = fitPopulation.get(secondParentIndex);
+
+            Integer child = crossover(firstParent, secondParent);
+            pPopulation.add(mutate(child));
+
+            childQuantity--;
+        }
+
+        return pPopulation;
+
+    }
+
+    public Vector<Integer> PopulationControl(){
+        int generationCounter = 0;
+        Vector<Integer> currentPopulation = generatePopulation();
+        while(/*!pause ||*/ this.fitPopulation.size() < MAX_POPULATION_SIZE){
+            System.out.println(this.fitPopulation.size());
+            currentPopulation = newGeneration(currentPopulation);
+            generationCounter++;
+        }
+        System.out.println("Cantidad de generaciones : " + generationCounter);
+        return this.fitPopulation;
+    }
+
+    public Vector<Integer> getFitPopulation() {
+        return fitPopulation;
+    }
+
+    public void setFitPopulation(Vector<Integer> fitPopulation) {
+        this.fitPopulation = fitPopulation;
+    }
+
+    public DistributionTable getDistributionTable() {
+        return distributionTable;
+    }
+
+    public void setDistributionTable(DistributionTable distributionTable) {
+        this.distributionTable = distributionTable;
+    }
+
+    public boolean isPause() {
+        return pause;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
     }
 }
