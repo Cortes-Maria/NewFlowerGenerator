@@ -3,6 +3,7 @@ package GUI;
 import Genetic.DistributionTable;
 import Genetic.GeneticAlgorithm;
 import Greedy.GreedyColorAnalyser;
+import ImageGenerator.Controller;
 import ImageManagment.FlowerImage;
 import ImageManagment.Pixel;
 
@@ -154,39 +155,12 @@ public class ImageProcessor extends JPanel {
                     nextFrame.setLocationRelativeTo(null);
                     nextFrame.setVisible(true);
                 }else{
-                    GreedyColorAnalyser greedyPrueba = new GreedyColorAnalyser();
-                    //System.out.println("Pixeles Optimos del pétalo");
-                    //greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsPETAL().firstElement());
-                    //System.out.println("Pixeles Optimos del centro");
-                    //greedyPrueba.printPixelVector(greedyPrueba.getOptimalPixelsCENTER().firstElement());
+
                     //Should open new Window
                     /*JComponent comp = (JComponent) actionEvent.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();*/
-
-                    DistributionTable algorithmTable = new DistributionTable();
-
-                    for(Vector<Pixel> pixelVector : greedyPrueba.getOptimalPixelsPETAL()){
-                        algorithmTable.insertDistributionPetal(pixelVector);
-                    }
-                    for(Vector<Pixel> pixelVector : greedyPrueba.getOptimalPixelsCENTER()){
-                        algorithmTable.insertDistributionCenter(pixelVector);
-                    }
-                    algorithmTable.setTableValues();
-                    algorithmTable.printTable();
-
-
-                    GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-                    geneticAlgorithm.generatePopulation();
-                    //geneticAlgorithm.printPopulation();
-
-                    geneticAlgorithm.evaluatePopulation(algorithmTable);
-                    //System.out.println(geneticAlgorithm.aptPetal.size());
-
-                    geneticAlgorithm.printPopulation(algorithmTable);
-                    //System.out.println(geneticAlgorithm.aptCenter.size());
-
-
+                    Controller prueba = new Controller();
                 }
             }
         });
