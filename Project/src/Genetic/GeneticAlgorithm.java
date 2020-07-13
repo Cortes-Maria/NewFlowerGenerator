@@ -4,19 +4,20 @@ import lib.ICONSTANTS;
 
 import javax.swing.plaf.IconUIResource;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
-import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GeneticAlgorithm implements ICONSTANTS {
     private Vector<Integer> fitPopulation;
+    private HashMap<Color,Float> fitPopulationDistribution;
     private DistributionTable distributionTable;
     private boolean pause;
     public GeneticAlgorithm(DistributionTable pDistributionTable){
         fitPopulation = new Vector<Integer>();
         distributionTable = pDistributionTable;
         pause = false;
+        fitPopulationDistribution = new HashMap<Color,Float>();
 
     }
 
@@ -53,29 +54,37 @@ public class GeneticAlgorithm implements ICONSTANTS {
     }
 
     public Integer crossover(Integer firstParent, Integer secondParent){
-        String binaryFirstParent = String.format("%16s",Integer.toBinaryString(firstParent)).replace(" ", "0");
-        String binarySecondParent = String.format("%16s",Integer.toBinaryString(secondParent)).replace(" ", "0");
-        Random random = new Random();
-        int intersectionPoint = random.nextInt(CHROMOSOMES_BITS);
-        String binaryChild = "";
-        binaryChild += binaryFirstParent.substring(0, intersectionPoint);
-        binaryChild += binarySecondParent.substring(intersectionPoint);
-        return Integer.parseInt(binaryChild,2);
+        Random rand = new Random();
+        int intersectionPoint = rand.nextInt(CHROMOSOMES_BITS);
+        int bitMask = MAX_CHROMOSOME_VALUE;
+        int child;
+        int highBits;
+        bitMask >>>= CHROMOSOMES_BITS - intersectionPoint;
+        child = firstParent & bitMask;
+        highBits = secondParent | bitMask;
+        highBits >>>= CHROMOSOMES_BITS - intersectionPoint;
+        highBits <<= CHROMOSOMES_BITS - intersectionPoint;
+        child |= highBits;
+        return child;
     }
 
     public Integer mutate(Integer individual){
         Random random = new Random();
-        if(random.nextDouble()<= MUTATION_PERCENTAGE){
-            String binaryIndividual = String.format("%16s",Integer.toBinaryString(individual)).replace(" ", "0");
-            int shiftPosition = random.nextInt(CHROMOSOMES_BITS);
-            String mutatedIndividual = binaryIndividual.substring(0,shiftPosition);
-            if(binaryIndividual.charAt(shiftPosition) == '0'){
-                mutatedIndividual += "1";
+        if(random.nextDouble() <= MUTATION_PERCENTAGE){
+            int bitMask = BIT_MASK;
+            int shiftAmount = random.nextInt(CHROMOSOMES_BITS - 1);
+            bitMask <<= shiftAmount;
+            long bitValue = individual & bitMask;
+            bitValue >>= shiftAmount;
+            if(bitValue == 1) {
+                bitMask = MAX_CHROMOSOME_VALUE;
+                bitMask -= Math.pow(2, shiftAmount);
+                individual &= bitMask;
             }else{
-                mutatedIndividual += "0";
+                bitMask = BIT_MASK;
+                bitMask <<= shiftAmount;
+                individual |= bitMask;
             }
-            mutatedIndividual += binaryIndividual.substring(shiftPosition+1);
-            individual = Integer.parseInt(mutatedIndividual,2);
         }
         return individual;
     }
@@ -84,19 +93,22 @@ public class GeneticAlgorithm implements ICONSTANTS {
         Random rand = new Random();
         int childQuantity = pPopulation.size();
         evaluatePopulation(pPopulation);
-        pPopulation.clear();
-        while(childQuantity>0){
-            int firstParentIndex = rand.nextInt(fitPopulation.size()-1);
-            int secondParentIndex = rand.nextInt(fitPopulation.size()-1);
-            Integer firstParent = fitPopulation.get(firstParentIndex);
-            Integer secondParent = fitPopulation.get(secondParentIndex);
+        if(!fitPopulation.isEmpty()){
+            pPopulation.clear();
+            while(childQuantity>0){
+                int firstParentIndex = rand.nextInt(fitPopulation.size()-1);
+                int secondParentIndex = rand.nextInt(fitPopulation.size()-1);
+                Integer firstParent = fitPopulation.get(firstParentIndex);
+                Integer secondParent = fitPopulation.get(secondParentIndex);
 
-            Integer child = crossover(firstParent, secondParent);
-            pPopulation.add(mutate(child));
+                Integer child = crossover(firstParent, secondParent);
+                pPopulation.add(mutate(child));
 
-            childQuantity--;
+                childQuantity--;
+            }
         }
-
+        pPopulation.clear();
+        pPopulation = generatePopulation();
         return pPopulation;
 
     }
@@ -105,12 +117,35 @@ public class GeneticAlgorithm implements ICONSTANTS {
         int generationCounter = 0;
         Vector<Integer> currentPopulation = generatePopulation();
         while(/*!pause ||*/ this.fitPopulation.size() < MAX_POPULATION_SIZE){
-            System.out.println(this.fitPopulation.size());
             currentPopulation = newGeneration(currentPopulation);
             generationCounter++;
+            calculateFitDistribution();
+            System.out.println("Fit color distribution, Generation number: "+generationCounter);
+            printFITdistribution();
         }
         System.out.println("Cantidad de generaciones : " + generationCounter);
         return this.fitPopulation;
+    }
+    public void calculateFitDistribution(){
+        for (Integer individual: fitPopulation){
+            Color individualColor = distributionTable.getDistribution().getValueOf(individual);
+            if(fitPopulationDistribution.containsKey(individualColor)){
+                fitPopulationDistribution.put(individualColor,fitPopulationDistribution.get(individualColor)+1);
+            }else{
+                fitPopulationDistribution.put(individualColor,1f);
+            }
+        }
+        float totalFIT = fitPopulation.size();
+        for (Map.Entry<Color,Float> entry : fitPopulationDistribution.entrySet()) {
+           entry.setValue((float)entry.getValue()/totalFIT);
+        }
+    }
+    public void printFITdistribution(){
+        for (Map.Entry<Color,Float> entry : fitPopulationDistribution.entrySet()) {
+            Color color =  entry.getKey();
+            System.out.print("Color: " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " ");
+            System.out.println("Distribution: " + entry.getValue());
+        }
     }
 
     public Vector<Integer> getFitPopulation() {
@@ -136,4 +171,6 @@ public class GeneticAlgorithm implements ICONSTANTS {
     public void setPause(boolean pause) {
         this.pause = pause;
     }
+
+
 }

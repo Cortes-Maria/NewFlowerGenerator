@@ -31,7 +31,7 @@ public class DistributionTable implements ICONSTANTS{
 
     public void printTable(){
         //System.out.println(this.total);
-        System.out.println("Colors");
+        System.out.println("Tabla de distribución cromosomática");
         distribution.printNode();
 
     }
