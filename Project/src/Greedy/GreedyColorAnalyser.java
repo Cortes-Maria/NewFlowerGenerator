@@ -15,6 +15,10 @@ public class GreedyColorAnalyser implements ICONSTANTS{
         optimalPixelsPETAL = new Vector<Vector<Pixel>>();
         optimalPixelsCENTER = new Vector<Vector<Pixel>>();
         extractOptimalPixels();
+//        System.out.println("Pixeles optimos petalos: " + " Flor1: "+optimalPixelsPETAL.get(0).size() +" Flor 2: "+ optimalPixelsPETAL.get(1).size()+" Flor 3: "+ optimalPixelsPETAL.get(2));
+ //       System.out.println("Pixeles optimos centro: " + " Flor1: "+optimalPixelsCENTER.get(0).size() +" Flor 2: "+ optimalPixelsCENTER.get(1).size()+" Flor 3: "+optimalPixelsCENTER.get(2));
+
+
     }
 
     private void extractOptimalPixels(){

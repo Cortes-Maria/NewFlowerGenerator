@@ -5,6 +5,7 @@ import Genetic.GeneticAlgorithm;
 import Greedy.GreedyColorAnalyser;
 import ImageManagment.Pixel;
 
+import java.awt.*;
 import java.util.Vector;
 
 public class Controller {
@@ -21,8 +22,12 @@ public class Controller {
         getDistributions();
         petalGenetic = new GeneticAlgorithm(petalDistributionTable);
         centerGenetic = new GeneticAlgorithm(centerDistributionTable);
-        petalDistributionTable.printTable();
+       // petalDistributionTable.printTable();
+        // centerDistributionTable.printTable();
+        System.out.println("Population control: Petal");
         petalGenetic.PopulationControl();
+        System.out.println("Population control: Center");
+        centerGenetic.PopulationControl();
 
     }
     public void getDistributions(){
@@ -34,5 +39,45 @@ public class Controller {
         }
         centerDistributionTable.setTableValues();
         petalDistributionTable.setTableValues();
+    }
+
+    public GreedyColorAnalyser getGreedyColorAnalyser() {
+        return greedyColorAnalyser;
+    }
+
+    public void setGreedyColorAnalyser(GreedyColorAnalyser greedyColorAnalyser) {
+        this.greedyColorAnalyser = greedyColorAnalyser;
+    }
+
+    public GeneticAlgorithm getPetalGenetic() {
+        return petalGenetic;
+    }
+
+    public void setPetalGenetic(GeneticAlgorithm petalGenetic) {
+        this.petalGenetic = petalGenetic;
+    }
+
+    public GeneticAlgorithm getCenterGenetic() {
+        return centerGenetic;
+    }
+
+    public void setCenterGenetic(GeneticAlgorithm centerGenetic) {
+        this.centerGenetic = centerGenetic;
+    }
+
+    public DistributionTable getCenterDistributionTable() {
+        return centerDistributionTable;
+    }
+
+    public void setCenterDistributionTable(DistributionTable centerDistributionTable) {
+        this.centerDistributionTable = centerDistributionTable;
+    }
+
+    public DistributionTable getPetalDistributionTable() {
+        return petalDistributionTable;
+    }
+
+    public void setPetalDistributionTable(DistributionTable petalDistributionTable) {
+        this.petalDistributionTable = petalDistributionTable;
     }
 }

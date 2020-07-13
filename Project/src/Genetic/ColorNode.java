@@ -25,25 +25,28 @@ public class ColorNode implements ICONSTANTS {
 
     public boolean isSimilar(Color color1, Color color2){
         if(color1!=null && color2!=null){
-            float distance = (float) Math.sqrt(Math.pow(color1.getRed()-color2.getRed(),2) +
-                    Math.pow(color1.getGreen()-color2.getGreen(),2) +
-                    Math.pow(color1.getBlue()-color2.getBlue(),2));
-            if(distance/COLOR_BASE <= DISTRIBUTION_COLOR_PERCENTAGE){
+            float distance = colorDistance(color1.getRGB(),color2.getRGB());
+            if(distance <= COLOR_SIMILARITY){
                 return true;
             }
         }
         return false;
     }
 
+    public static int colorDistance(int pColor1, int pColor2){
+        int deltaBlue = Math.abs(((pColor1)&0xFF) - ((pColor2)&0xFF));
+        int deltaGreen = Math.abs(((pColor1>>8)&0xFF) - ((pColor2>>8)&0xFF));
+        int deltaRed = Math.abs(((pColor1>>16)&0xFF) - ((pColor2>>16)&0xFF));
+        return deltaRed + deltaGreen + deltaBlue;
+    }
+
+
     public float getSimilarity(int value){
         Color color = this.getValueOf(value);
         if(color!=null){
-            if(colorInformation.isEmpty()){
+            if(!colorInformation.isEmpty()){
                 Color mainColor = this.getMainColor();
-                float distance = (float) Math.sqrt(Math.pow(mainColor.getRed()-color.getRed(),2) +
-                        Math.pow(mainColor.getGreen()-color.getGreen(),2) +
-                        Math.pow(mainColor.getBlue()-color.getBlue(),2));
-                return distance/COLOR_BASE;
+                    return colorDistance(color.getRGB(),mainColor.getRGB());
             }
         }
         return 0;
