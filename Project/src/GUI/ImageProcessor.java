@@ -5,6 +5,7 @@ import Genetic.GeneticAlgorithm;
 import Greedy.GreedyColorAnalyser;
 import ImageGenerator.Controller;
 import ImageGenerator.Flower;
+import ImageGenerator.Thumbnail;
 import ImageManagment.FlowerImage;
 import ImageManagment.Pixel;
 
@@ -172,6 +173,10 @@ public class ImageProcessor extends JPanel {
                     frame.add(flower);
                     frame.setVisible(true);
 
+                    JFrame thumbNail = new JFrame("Thumbnail");
+                    thumbNail.setSize(300,150);
+                    thumbNail.add(new Thumbnail());
+                    thumbNail.setVisible(true);
                 }
             }
         });
