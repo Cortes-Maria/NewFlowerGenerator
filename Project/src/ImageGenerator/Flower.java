@@ -3,11 +3,16 @@ package ImageGenerator;
 import lib.ICONSTANTS;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
 import java.util.Random;
 import java.util.Vector;
 import javax.swing.*;
 
 public class Flower extends JPanel implements ICONSTANTS {
+    private JButton nextGeneration;
+    private Controller controller;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Flower");
@@ -20,7 +25,35 @@ public class Flower extends JPanel implements ICONSTANTS {
         frame.setVisible(true);
     }
 
+    public Flower(){
+        controller = new Controller();
+        nextGeneration = new JButton("Next Generation");
+        this.add(nextGeneration);
 
+        nextGeneration.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComponent comp = (JComponent) e.getSource();
+                Window win = SwingUtilities.getWindowAncestor(comp);
+                win.dispose();
+
+                JFrame frame = new JFrame("Flower");
+                frame.setSize(500, 500);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setLocationRelativeTo(null);
+
+                JPanel flower = nextFlower();
+                frame.add(flower);
+                frame.setVisible(true);
+            }
+        });
+    }
+
+    public Flower nextFlower(){
+        controller.getPetalGenetic().PopulationControl();
+        controller.getCenterGenetic().PopulationControl();
+        return this;
+    }
 
     public Polygon generateTriangle(float angle){
         Polygon newPolygon = new Polygon();
@@ -34,7 +67,7 @@ public class Flower extends JPanel implements ICONSTANTS {
         return newPolygon;
     }
 
-    public Vector<Polygon> generatePetal(){
+    public Vector<Polygon> generatePetal(int radian){
         Vector<Polygon> polygons = new Vector<>();
 
         Random random = new Random();
@@ -44,39 +77,24 @@ public class Flower extends JPanel implements ICONSTANTS {
         int addToY = POLYGON_WIDTH;
 
         int moveLocationY = getNewLocationY(y,addToY);
-        int angle = 0;
 
-        while(angle <= TWO_PI_RADIAN){
-            for(int j=0; j<LINES_PER_PETAL; j++){
-                for(int i=0; i<LINE_IN_PETAL ;i++){
-                    polygons.add(this.generateReversedTriangle(x,y,angle));
-                    polygons.add(this.generateTriangle(x, getNewLocationY(y,addToY),angle));
+        for(int j=0; j<LINES_PER_PETAL; j++){
+            for(int i=0; i<LINE_IN_PETAL ;i++){
+                polygons.add(this.generateReversedTriangle(x,y,radian));
+                polygons.add(this.generateTriangle(x, getNewLocationY(y,addToY),radian));
 
-                    if(x > CENTER_PETAL_X + MAX_PETAL_WIDTH || x < CENTER_PETAL_X - MAX_PETAL_WIDTH){
-                        addToX = -addToX;
-                    }
-                    if(y < CENTER_PETAL_Y - MAX_PETAL_HEIGHT || y > CENTER_PETAL_Y + MAX_PETAL_HEIGHT){
-                        addToY = -addToY;
-                    }
-                    x = getNewLocationX(x,addToX);
-                    y = getNewLocationY(y,addToY);
+                if(x > CENTER_PETAL_X + MAX_PETAL_WIDTH || x < CENTER_PETAL_X - MAX_PETAL_WIDTH){
+                    addToX = -addToX;
                 }
-                x = CENTER_PETAL_X;
-                y = moveLocationY;
-                moveLocationY = getNewLocationY(y, addToY);
+                if(y < CENTER_PETAL_Y - MAX_PETAL_HEIGHT || y > CENTER_PETAL_Y + MAX_PETAL_HEIGHT){
+                    addToY = -addToY;
+                }
+                x = getNewLocationX(x,addToX);
+                y = getNewLocationY(y,addToY);
             }
             x = CENTER_PETAL_X;
-            y = CENTER_PETAL_Y;
-            moveLocationY = getNewLocationY(y,addToY);
-            angle += TWO_PI_RADIAN/PETAL_QUANTITY;
-        }
-        return polygons;
-    }
-
-    public Vector<Polygon> generateCenter(){
-        Vector<Polygon> polygons = new Vector<>();
-        for(int angle = 0; angle<=TWO_PI_RADIAN; angle+=TWO_PI_RADIAN/CENTER_QUANTITY){
-            polygons.add(generateDiamond(CENTER_PETAL_X,CENTER_PETAL_Y,angle));
+            y = moveLocationY;
+            moveLocationY = getNewLocationY(y, addToY);
         }
         return polygons;
     }
@@ -122,25 +140,67 @@ public class Flower extends JPanel implements ICONSTANTS {
         return y - height;
     }
 
+    public Color getControllerColor(){
+
+        return null;
+    }
+
+    public Vector<Color> generateControllerColors(){
+        Vector<Color> colors = new Vector<>();
+        for(Color color : controller.getPetalGenetic().getFitPopulationDistribution().keySet()){
+            int i = 0;
+            while(i/POLYGON_PER_PETAL <= controller.getPetalGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX)){
+                colors.add(color);
+                i++;
+            }
+        }
+        return colors;
+    }
+
+    public Vector<Color> generateControllerCenter(){
+        Vector<Color> colors = new Vector<>();
+        for(Color color : controller.getCenterGenetic().getFitPopulationDistribution().keySet()){
+            int i = 0;
+            while(i/CENTER_QUANTITY <= controller.getCenterGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX)){
+                colors.add(color);
+                i++;
+            }
+        }
+        return colors;
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);  // paint background
 
         Graphics2D g2 = (Graphics2D) g;
         Random random = new Random();
-        Vector<Polygon> polygons = this.generatePetal();
-        for(Polygon polygon : polygons){
-            //g2.setColor(new Color(0,0,0));
-            g2.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-            g2.fillPolygon(polygon);
+
+        int radian = 0;
+        while(radian<=360){
+
+            Vector<Polygon> polygons = this.generatePetal(radian);
+            Vector<Color> colors = this.generateControllerColors();
+            int i = 0;
+            for(Polygon polygon : polygons){
+                g2.setColor(colors.elementAt(i));
+                //g2.setColor(new Color(0,0,0));
+                g2.fillPolygon(polygon);
+                i++;
+            }
+
+            radian += TWO_PI_RADIAN/PETAL_QUANTITY;
         }
 
-        polygons = this.generateCenter();
-        for(Polygon polygon : polygons){
-            //g2.setColor(new Color(0,0,0));
-            g2.setColor(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-            g2.fillPolygon(polygon);
+        radian = 0;
+        Vector<Color> colors = this.generateControllerCenter();
+        int i = 0;
+        while(radian<360){
+            g2.setColor(colors.elementAt(i));
+            g2.fillPolygon(generateDiamond(CENTER_PETAL_X,CENTER_PETAL_Y,radian));
+            i++;
+
+            radian += TWO_PI_RADIAN/CENTER_QUANTITY;
         }
+
     }
-
-
 }

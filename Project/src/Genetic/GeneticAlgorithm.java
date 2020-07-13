@@ -119,16 +119,16 @@ public class GeneticAlgorithm implements ICONSTANTS {
     }
 
     public HashMap<Color,Vector<Float>> PopulationControl(){
-      int localGeneratioCounter = 0;
-      while(localGeneratioCounter < GENERATIONS_GROWTH){
+        int localGenerationCounter = 0;
+        while(localGenerationCounter < GENERATIONS_GROWTH){
               newGeneration();
               generationCount++;
               calculateFitDistribution();
               recentlyAddFitIndividuals.clear();
               System.out.println("Fit color distribution, Generation number: "+generationCount);
               printFITdistribution();
-              localGeneratioCounter++;
-      }
+              localGenerationCounter++;
+        }
         return fitPopulationDistribution;
     }
     public void calculateFitDistribution(){

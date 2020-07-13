@@ -4,6 +4,7 @@ import Genetic.DistributionTable;
 import Genetic.GeneticAlgorithm;
 import Greedy.GreedyColorAnalyser;
 import ImageGenerator.Controller;
+import ImageGenerator.Flower;
 import ImageManagment.FlowerImage;
 import ImageManagment.Pixel;
 
@@ -157,10 +158,20 @@ public class ImageProcessor extends JPanel {
                 }else{
 
                     //Should open new Window
-                    /*JComponent comp = (JComponent) actionEvent.getSource();
+                    JComponent comp = (JComponent) actionEvent.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
-                    win.dispose();*/
-                    Controller prueba = new Controller();
+                    win.dispose();
+
+                    //Controller prueba = new Controller();
+                    JFrame frame = new JFrame("Flower");
+                    frame.setSize(500, 500);
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setLocationRelativeTo(null);
+
+                    JPanel flower = new Flower();
+                    frame.add(flower);
+                    frame.setVisible(true);
+
                 }
             }
         });
