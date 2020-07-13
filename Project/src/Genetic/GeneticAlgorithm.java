@@ -172,5 +172,11 @@ public class GeneticAlgorithm implements ICONSTANTS {
         this.pause = pause;
     }
 
+    public HashMap<Color, Float> getFitPopulationDistribution() {
+        return fitPopulationDistribution;
+    }
 
+    public void setFitPopulationDistribution(HashMap<Color, Float> fitPopulationDistribution) {
+        this.fitPopulationDistribution = fitPopulationDistribution;
+    }
 }
