@@ -33,26 +33,26 @@ public class Flower extends JPanel implements ICONSTANTS {
         nextGeneration.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JComponent comp = (JComponent) e.getSource();
+                /*JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
-                win.dispose();
+                win.dispose();*/
 
-                JFrame frame = new JFrame("Flower");
+                /*JFrame frame = new JFrame("Flower");
                 frame.setSize(500, 500);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLocationRelativeTo(null);
-
-                JPanel flower = nextFlower();
-                frame.add(flower);
                 frame.setVisible(true);
+                frame.add(flower);*/
+                nextFlower();
+                repaint();
             }
         });
     }
 
-    public Flower nextFlower(){
+    public void nextFlower(){
         controller.getPetalGenetic().PopulationControl();
         controller.getCenterGenetic().PopulationControl();
-        return this;
+        //return new Flower();
     }
 
     public Polygon generateTriangle(float angle){
@@ -147,13 +147,16 @@ public class Flower extends JPanel implements ICONSTANTS {
 
     public Vector<Color> generateControllerColors(){
         Vector<Color> colors = new Vector<>();
-        for(Color color : controller.getPetalGenetic().getFitPopulationDistribution().keySet()){
-            int i = 0;
-            while(i/POLYGON_PER_PETAL <= controller.getPetalGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX)){
+
+        System.out.println("COLORES");
+        //System.out.println();
+        while(colors.size() <= POLYGON_PER_PETAL){
+            for(Color color : controller.getPetalGenetic().getFitPopulationDistribution().keySet()){
                 colors.add(color);
-                i++;
             }
+
         }
+        System.out.println();
         return colors;
     }
 
@@ -195,7 +198,7 @@ public class Flower extends JPanel implements ICONSTANTS {
         Vector<Color> colors = this.generateControllerCenter();
         int i = 0;
         while(radian<360){
-            g2.setColor(colors.elementAt(i));
+            g2.setColor(new Color(random.nextInt(256),random.nextInt(256),random.nextInt(256)));
             g2.fillPolygon(generateDiamond(CENTER_PETAL_X,CENTER_PETAL_Y,radian));
             i++;
 
