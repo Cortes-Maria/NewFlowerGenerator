@@ -3,10 +3,10 @@ package lib;
 public interface ICONSTANTS {
     int HEIGHT_POS = 0;
     int WIDTH_POS = 1;
-    float LUMINANCE_THRESHOLD = 0.6F;//cambiar luminancia
+    float LUMINANCE_THRESHOLD = 0.2F;//cambiar luminancia
     int GROUPS_QUANTITY = 16;
     float COLOR_BASE = 441.6729559F;
-    float APT_PERCENTAGE = 18F;//AQUI
+    float APT_PERCENTAGE = 25F;//AQUI
     int MAX_CHROMOSOME_VALUE = 65535;
     int INITIAL_POPULATION_SIZE = 13;
     int CHROMOSOMES_BITS = 16;
