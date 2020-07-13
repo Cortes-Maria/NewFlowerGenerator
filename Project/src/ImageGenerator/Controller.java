@@ -25,8 +25,12 @@ public class Controller {
        // petalDistributionTable.printTable();
         // centerDistributionTable.printTable();
         System.out.println("Population control: Petal");
+        printMainColor(petalDistributionTable.getDistribution().getMainColor());
+        petalGenetic.PopulationControl();
+        petalGenetic.PopulationControl();
         petalGenetic.PopulationControl();
         System.out.println("Population control: Center");
+        printMainColor(centerDistributionTable.getDistribution().getMainColor());
         centerGenetic.PopulationControl();
 
     }
@@ -39,6 +43,11 @@ public class Controller {
         }
         centerDistributionTable.setTableValues();
         petalDistributionTable.setTableValues();
+    }
+    public void printMainColor(Color color){
+        System.out.print("Main Color: ");
+        System.out.print("Color: " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " ");
+        System.out.println();
     }
 
     public GreedyColorAnalyser getGreedyColorAnalyser() {

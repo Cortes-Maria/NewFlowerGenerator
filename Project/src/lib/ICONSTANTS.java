@@ -27,5 +27,7 @@ public interface ICONSTANTS {
     int CENTER_QUANTITY = 5;
     int LINE_IN_PETAL = 15;
     int LINES_PER_PETAL = 12;
-
+    int GENERATIONS_GROWTH = 5;
+    int CANT_INDEX = 0;
+    int PERCENTAGE_INDEX = 1;
 }

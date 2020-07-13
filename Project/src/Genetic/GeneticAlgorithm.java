@@ -2,23 +2,27 @@ package Genetic;
 
 import lib.ICONSTANTS;
 
-import javax.swing.plaf.IconUIResource;
 import java.awt.*;
 import java.util.*;
 
-import java.util.concurrent.ConcurrentHashMap;
 
 public class GeneticAlgorithm implements ICONSTANTS {
     private Vector<Integer> fitPopulation;
-    private HashMap<Color,Float> fitPopulationDistribution;
+    private HashMap<Color,Vector<Float>> fitPopulationDistribution;
     private DistributionTable distributionTable;
     private boolean pause;
+    private int generationCount;
+    private Vector<Integer> currentPopulation;
+    private Vector<Integer> recentlyAddFitIndividuals;
+
     public GeneticAlgorithm(DistributionTable pDistributionTable){
         fitPopulation = new Vector<Integer>();
         distributionTable = pDistributionTable;
         pause = false;
-        fitPopulationDistribution = new HashMap<Color,Float>();
-
+        fitPopulationDistribution = new HashMap<Color,Vector<Float>>();
+        generationCount = 0;
+        currentPopulation = generatePopulation();
+        recentlyAddFitIndividuals = new Vector<Integer>();
     }
 
     public Vector<Integer> generatePopulation(){
@@ -35,6 +39,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
     public void evaluatePopulation(Vector<Integer> pPopulation){
         for(int individual : pPopulation){
             if(isFitness(individual, distributionTable.distribution)){
+                recentlyAddFitIndividuals.add(individual);
                 fitPopulation.add(individual);
             }
         }
@@ -89,12 +94,12 @@ public class GeneticAlgorithm implements ICONSTANTS {
         return individual;
     }
 
-    public Vector<Integer> newGeneration(Vector<Integer> pPopulation){
+    public Vector<Integer> newGeneration(){
         Random rand = new Random();
-        int childQuantity = pPopulation.size();
-        evaluatePopulation(pPopulation);
-        if(!fitPopulation.isEmpty()){
-            pPopulation.clear();
+        int childQuantity = currentPopulation.size();
+        evaluatePopulation(currentPopulation);
+        if(!fitPopulation.isEmpty() && fitPopulation.size() > 1){
+            currentPopulation.clear();
             while(childQuantity>0){
                 int firstParentIndex = rand.nextInt(fitPopulation.size()-1);
                 int secondParentIndex = rand.nextInt(fitPopulation.size()-1);
@@ -102,49 +107,55 @@ public class GeneticAlgorithm implements ICONSTANTS {
                 Integer secondParent = fitPopulation.get(secondParentIndex);
 
                 Integer child = crossover(firstParent, secondParent);
-                pPopulation.add(mutate(child));
+                currentPopulation.add(mutate(child));
 
                 childQuantity--;
             }
         }
-        pPopulation.clear();
-        pPopulation = generatePopulation();
-        return pPopulation;
+        currentPopulation.clear();
+        currentPopulation = generatePopulation();
+        return currentPopulation;
 
     }
 
-    public Vector<Integer> PopulationControl(){
-        int generationCounter = 0;
-        Vector<Integer> currentPopulation = generatePopulation();
-        while(/*!pause ||*/ this.fitPopulation.size() < MAX_POPULATION_SIZE){
-            currentPopulation = newGeneration(currentPopulation);
-            generationCounter++;
-            calculateFitDistribution();
-            System.out.println("Fit color distribution, Generation number: "+generationCounter);
-            printFITdistribution();
-        }
-        System.out.println("Cantidad de generaciones : " + generationCounter);
-        return this.fitPopulation;
+    public HashMap<Color,Vector<Float>> PopulationControl(){
+      int localGeneratioCounter = 0;
+      while(localGeneratioCounter < GENERATIONS_GROWTH){
+              newGeneration();
+              generationCount++;
+              calculateFitDistribution();
+              recentlyAddFitIndividuals.clear();
+              System.out.println("Fit color distribution, Generation number: "+generationCount);
+              printFITdistribution();
+              localGeneratioCounter++;
+      }
+        return fitPopulationDistribution;
     }
     public void calculateFitDistribution(){
-        for (Integer individual: fitPopulation){
+        for (Integer individual: recentlyAddFitIndividuals){
             Color individualColor = distributionTable.getDistribution().getValueOf(individual);
             if(fitPopulationDistribution.containsKey(individualColor)){
-                fitPopulationDistribution.put(individualColor,fitPopulationDistribution.get(individualColor)+1);
+                Float newValue = fitPopulationDistribution.get(individualColor).get(CANT_INDEX)+1;
+                fitPopulationDistribution.get(individualColor).set(CANT_INDEX,newValue);
             }else{
-                fitPopulationDistribution.put(individualColor,1f);
+                Vector<Float> newVector = new Vector<Float>();
+                newVector.add(CANT_INDEX,1f);
+                newVector.add(PERCENTAGE_INDEX,0f);
+                fitPopulationDistribution.put(individualColor,newVector);
             }
         }
         float totalFIT = fitPopulation.size();
-        for (Map.Entry<Color,Float> entry : fitPopulationDistribution.entrySet()) {
-           entry.setValue((float)entry.getValue()/totalFIT);
+        for (Map.Entry<Color,Vector<Float>> entry : fitPopulationDistribution.entrySet()) {
+            float cant = entry.getValue().get(CANT_INDEX);
+            entry.getValue().set(PERCENTAGE_INDEX,cant/totalFIT);
+
         }
     }
     public void printFITdistribution(){
-        for (Map.Entry<Color,Float> entry : fitPopulationDistribution.entrySet()) {
+        for (Map.Entry<Color,Vector<Float>> entry : fitPopulationDistribution.entrySet()) {
             Color color =  entry.getKey();
             System.out.print("Color: " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " ");
-            System.out.println("Distribution: " + entry.getValue());
+            System.out.println("Distribution: " + entry.getValue().get(PERCENTAGE_INDEX));
         }
     }
 
@@ -172,11 +183,35 @@ public class GeneticAlgorithm implements ICONSTANTS {
         this.pause = pause;
     }
 
-    public HashMap<Color, Float> getFitPopulationDistribution() {
+    public HashMap<Color, Vector<Float>> getFitPopulationDistribution() {
         return fitPopulationDistribution;
     }
 
-    public void setFitPopulationDistribution(HashMap<Color, Float> fitPopulationDistribution) {
+    public void setFitPopulationDistribution(HashMap<Color, Vector<Float>> fitPopulationDistribution) {
         this.fitPopulationDistribution = fitPopulationDistribution;
+    }
+
+    public int getGenerationCount() {
+        return generationCount;
+    }
+
+    public void setGenerationCount(int generationCount) {
+        this.generationCount = generationCount;
+    }
+
+    public Vector<Integer> getCurrentPopulation() {
+        return currentPopulation;
+    }
+
+    public void setCurrentPopulation(Vector<Integer> currentPopulation) {
+        this.currentPopulation = currentPopulation;
+    }
+
+    public Vector<Integer> getRecentlyAddFitIndividuals() {
+        return recentlyAddFitIndividuals;
+    }
+
+    public void setRecentlyAddFitIndividuals(Vector<Integer> recentlyAddFitIndividuals) {
+        this.recentlyAddFitIndividuals = recentlyAddFitIndividuals;
     }
 }
