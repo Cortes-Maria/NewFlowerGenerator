@@ -6,14 +6,14 @@ public interface ICONSTANTS {
     float LUMINANCE_THRESHOLD = 0.6F;//cambiar luminancia
     int GROUPS_QUANTITY = 16;
     float COLOR_BASE = 441.6729559F;
-    float APT_PERCENTAGE = 6.5F;
+    float APT_PERCENTAGE = 18F;//AQUI
     int MAX_CHROMOSOME_VALUE = 65535;
     int INITIAL_POPULATION_SIZE = 13;
     int CHROMOSOMES_BITS = 16;
     float MUTATION_PERCENTAGE = 0.25F;
     int MAX_POPULATION_SIZE = 100;
     int BIT_MASK = 0x1;
-    int COLOR_SIMILARITY = 5;
+    int COLOR_SIMILARITY = 7;//AQUI
     int TWO_PI_RADIAN = 360;
     int PETAL_QUANTITY = 5;
     int CENTER_PETAL_X = 250;
@@ -27,7 +27,7 @@ public interface ICONSTANTS {
     int CENTER_QUANTITY = 5;
     int LINE_IN_PETAL = 15;
     int LINES_PER_PETAL = 12;
-    int GENERATIONS_GROWTH = 15;
+    int GENERATIONS_GROWTH = 2;
     int CANT_INDEX = 0;
     int PERCENTAGE_INDEX = 1;
 

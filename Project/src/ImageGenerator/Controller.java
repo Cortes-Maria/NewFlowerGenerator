@@ -27,8 +27,6 @@ public class Controller {
         System.out.println("Population control: Petal");
         printMainColor(petalDistributionTable.getDistribution().getMainColor());
         petalGenetic.PopulationControl();
-        petalGenetic.PopulationControl();
-        petalGenetic.PopulationControl();
         System.out.println("Population control: Center");
         printMainColor(centerDistributionTable.getDistribution().getMainColor());
         centerGenetic.PopulationControl();
