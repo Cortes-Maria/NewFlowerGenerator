@@ -129,6 +129,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
               printFITdistribution();
               localGenerationCounter++;
         }
+        System.out.println();
         return fitPopulationDistribution;
     }
     public void calculateFitDistribution(){
