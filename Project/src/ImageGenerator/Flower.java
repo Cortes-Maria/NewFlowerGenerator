@@ -148,8 +148,7 @@ public class Flower extends JPanel implements ICONSTANTS {
 
     public Vector<Color> generateControllerColors(){
         Vector<Color> colors = new Vector<>();
-        //System.out.println("COLORES");
-        //System.out.println();
+
         while(colors.size() <= POLYGON_PER_PETAL){
             for(Color color : controller.getPetalGenetic().getFitPopulationDistribution().keySet()){
                 colors.add(color);

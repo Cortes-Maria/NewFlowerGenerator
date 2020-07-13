@@ -6,7 +6,7 @@ public interface ICONSTANTS {
     float LUMINANCE_THRESHOLD = 0.2F;//cambiar luminancia
     int GROUPS_QUANTITY = 16;
     float COLOR_BASE = 441.6729559F;
-    float APT_PERCENTAGE = 16F;//AQUI
+    float APT_PERCENTAGE = 25F;//AQUI
     int MAX_CHROMOSOME_VALUE = 65535;
     int INITIAL_POPULATION_SIZE = 13;
     int CHROMOSOMES_BITS = 16;
