@@ -51,9 +51,14 @@ public class Flower extends JPanel implements ICONSTANTS {
     }
 
     public void nextFlower(){
+        System.out.println("Population control: Petal");
+        controller.printMainColor(controller.getPetalDistributionTable().getDistribution().getMainColor());
         controller.getPetalGenetic().PopulationControl();
+
+        System.out.println("Population control: Center");
+        controller.printMainColor(controller.getCenterDistributionTable().getDistribution().getMainColor());
         controller.getCenterGenetic().PopulationControl();
-        //return new Flower();
+
     }
 
     public Polygon generateTriangle(float angle){

@@ -22,8 +22,6 @@ public class Controller {
         getDistributions();
         petalGenetic = new GeneticAlgorithm(petalDistributionTable);
         centerGenetic = new GeneticAlgorithm(centerDistributionTable);
-       // petalDistributionTable.printTable();
-        // centerDistributionTable.printTable();
         System.out.println("Population control: Petal");
         printMainColor(petalDistributionTable.getDistribution().getMainColor());
         petalGenetic.PopulationControl();
