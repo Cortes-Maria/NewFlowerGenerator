@@ -37,6 +37,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
     }
 
     public void evaluatePopulation(Vector<Integer> pPopulation){
+        recentlyAddFitIndividuals.clear();
         for(int individual : pPopulation){
             if(isFitness(individual, distributionTable.distribution)){
                 recentlyAddFitIndividuals.add(individual);
@@ -118,7 +119,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
 
     }
 
-    public HashMap<Color,Vector<Float>> PopulationControl(){
+    public void PopulationControl(){
         int localGenerationCounter = 0;
         while(localGenerationCounter < GENERATIONS_GROWTH){
               newGeneration();
@@ -130,27 +131,32 @@ public class GeneticAlgorithm implements ICONSTANTS {
               localGenerationCounter++;
         }
         System.out.println();
-        return fitPopulationDistribution;
     }
     public void calculateFitDistribution(){
-        for (Integer individual: recentlyAddFitIndividuals){
-            Color individualColor = distributionTable.getDistribution().getValueOf(individual);
-            if(fitPopulationDistribution.containsKey(individualColor)){
-                Float newValue = fitPopulationDistribution.get(individualColor).get(CANT_INDEX)+1;
-                fitPopulationDistribution.get(individualColor).set(CANT_INDEX,newValue);
-            }else{
-                Vector<Float> newVector = new Vector<Float>();
-                newVector.add(CANT_INDEX,1f);
-                newVector.add(PERCENTAGE_INDEX,0f);
-                fitPopulationDistribution.put(individualColor,newVector);
+        if(!recentlyAddFitIndividuals.isEmpty() & !fitPopulation.isEmpty()){
+            for (Integer individual: recentlyAddFitIndividuals){
+                Color individualColor = distributionTable.getDistribution().getValueOf(individual);
+                if(individualColor != null){
+                    if(fitPopulationDistribution.containsKey(individualColor)){
+                        Float newValue = fitPopulationDistribution.get(individualColor).get(CANT_INDEX)+1;
+                        fitPopulationDistribution.get(individualColor).set(CANT_INDEX,newValue);
+                    }else{
+                        Vector<Float> newVector = new Vector<Float>();
+                        newVector.add(CANT_INDEX,1f);
+                        newVector.add(PERCENTAGE_INDEX,0f);
+                        fitPopulationDistribution.put(individualColor,newVector);
+                    }
+                }
+
+            }
+            float totalFIT = fitPopulation.size();
+            for (Map.Entry<Color,Vector<Float>> entry : fitPopulationDistribution.entrySet()) {
+                float cant = entry.getValue().get(CANT_INDEX);
+                entry.getValue().set(PERCENTAGE_INDEX,cant/totalFIT);
+
             }
         }
-        float totalFIT = fitPopulation.size();
-        for (Map.Entry<Color,Vector<Float>> entry : fitPopulationDistribution.entrySet()) {
-            float cant = entry.getValue().get(CANT_INDEX);
-            entry.getValue().set(PERCENTAGE_INDEX,cant/totalFIT);
 
-        }
     }
     public void printFITdistribution(){
         if(!fitPopulationDistribution.isEmpty()){
