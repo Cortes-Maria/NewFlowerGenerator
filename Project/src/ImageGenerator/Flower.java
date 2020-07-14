@@ -149,6 +149,17 @@ public class Flower extends JPanel implements ICONSTANTS {
     public Vector<Color> generateControllerColors(){
         Vector<Color> colors = new Vector<>();
 
+        while (colors.size() <= POLYGON_PER_PETAL){
+            for(Color color : controller.getPetalGenetic().getFitPopulationDistribution().keySet()){
+                int i = (int) (controller.getPetalGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX)*CENTER_QUANTITY);
+                System.out.println(controller.getPetalGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX));
+                while(i >= 0){
+                    colors.add(color);
+                    i--;
+                }
+            }
+        }
+
         while(colors.size() <= POLYGON_PER_PETAL){
             for(Color color : controller.getPetalGenetic().getFitPopulationDistribution().keySet()){
                 colors.add(color);
@@ -163,13 +174,12 @@ public class Flower extends JPanel implements ICONSTANTS {
         Vector<Color> colors = new Vector<>();
         while (colors.size() <= CENTER_QUANTITY){
             for(Color color : controller.getCenterGenetic().getFitPopulationDistribution().keySet()){
-            /*int i = 0;
-            System.out.println(controller.getCenterGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX));
-            while(i/CENTER_QUANTITY <= controller.getCenterGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX)){*/
-                colors.add(color);
-                /*i++;
-            }*/
-                //System.out.println("I: " + i);
+                int i = (int) (controller.getCenterGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX)*CENTER_QUANTITY);
+                System.out.println(controller.getCenterGenetic().getFitPopulationDistribution().get(color).get(PERCENTAGE_INDEX));
+                while(i >= 0){
+                    colors.add(color);
+                    i--;
+                }
             }
         }
         return colors;

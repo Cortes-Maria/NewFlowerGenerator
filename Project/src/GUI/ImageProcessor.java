@@ -38,8 +38,8 @@ public class ImageProcessor extends JPanel {
     private JButton nextButton;
     private ArrayList<File> files;
     private JComboBox<String> comboBox;
-    private JTextField petalQuantity;
-    private JLabel petalQuantityLabel;
+    //private JTextField petalQuantity;
+    //private JLabel petalQuantityLabel;
 
     public ImageProcessor(){
     }
@@ -69,7 +69,7 @@ public class ImageProcessor extends JPanel {
 
         nextButton = new JButton("Next");
         comboBox = new JComboBox<String>();
-        petalQuantityLabel = new JLabel("Petal Quantity");
+        //petalQuantityLabel = new JLabel("Petal Quantity");
         setComboBox();
 
         add(label,gbc);
@@ -80,7 +80,7 @@ public class ImageProcessor extends JPanel {
         yCoordinate = new JTextField(3);
 
         fieldsPixel = new JPanel();
-        petalQuantity = new JTextField(3);
+        //petalQuantity = new JTextField(3);
 
         fieldsPixel.setBorder(new EmptyBorder(5, 5, 5, 5));
         fieldsPixel.add(red);
@@ -91,8 +91,8 @@ public class ImageProcessor extends JPanel {
 
         fieldsInformation = new JPanel();
         fieldsInformation.setBorder(new EmptyBorder(5,5,5,5));
-        fieldsInformation.add(petalQuantityLabel);
-        fieldsInformation.add(petalQuantity);
+        //fieldsInformation.add(petalQuantityLabel);
+        //fieldsInformation.add(petalQuantity);
         fieldsInformation.add(comboBox);
 
         add(fieldsPixel, gbc);
@@ -134,7 +134,7 @@ public class ImageProcessor extends JPanel {
             public void actionPerformed(ActionEvent actionEvent) {
                 //Adds the number of petals in the flower
                 ImageInformation imageInformation = ImageInformation.getInstance();
-                imageInformation.flowerImage.setPetalsQuantity(Integer.parseInt(petalQuantity.getText()));
+                //imageInformation.flowerImage.setPetalsQuantity(Integer.parseInt(petalQuantity.getText()));
 
                 //Insert ImageInformation in Flowers
                 Flowers flowers = Flowers.getInstance();
