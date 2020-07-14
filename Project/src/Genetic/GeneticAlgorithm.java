@@ -156,8 +156,11 @@ public class GeneticAlgorithm implements ICONSTANTS {
         if(!fitPopulationDistribution.isEmpty()){
             for (Map.Entry<Color,Vector<Float>> entry : fitPopulationDistribution.entrySet()) {
                 Color color =  entry.getKey();
-                System.out.print("Color: " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " ");
-                System.out.println("Distribution: " + entry.getValue().get(PERCENTAGE_INDEX));
+                if(entry.getValue() != null){
+                    System.out.print("Color: " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " ");
+                    System.out.println("Distribution: " + entry.getValue().get(PERCENTAGE_INDEX));
+                }
+
             }
         }
 
