@@ -50,7 +50,7 @@ public class GreedyColorAnalyser implements ICONSTANTS{
 
 
     private boolean greedyCriteria(float pLuminance){
-        if(pLuminance >= LUMINANCE_THRESHOLD){
+        if(pLuminance <= LUMINANCE_THRESHOLD){
             return true;
         }
         else return false;
@@ -89,5 +89,13 @@ public class GreedyColorAnalyser implements ICONSTANTS{
 
     public Vector<Vector<Pixel>> getOptimalPixelsCENTER() {
         return optimalPixelsCENTER;
+    }
+
+    public void setOptimalPixelsPETAL(Vector<Vector<Pixel>> optimalPixelsPETAL) {
+        this.optimalPixelsPETAL = optimalPixelsPETAL;
+    }
+
+    public void setOptimalPixelsCENTER(Vector<Vector<Pixel>> optimalPixelsCENTER) {
+        this.optimalPixelsCENTER = optimalPixelsCENTER;
     }
 }

@@ -10,7 +10,6 @@ public class GeneticAlgorithm implements ICONSTANTS {
     private Vector<Integer> fitPopulation;
     private HashMap<Color,Vector<Float>> fitPopulationDistribution;
     private DistributionTable distributionTable;
-    private boolean pause;
     private int generationCount;
     private Vector<Integer> currentPopulation;
     private Vector<Integer> recentlyAddFitIndividuals;
@@ -18,13 +17,17 @@ public class GeneticAlgorithm implements ICONSTANTS {
     public GeneticAlgorithm(DistributionTable pDistributionTable){
         fitPopulation = new Vector<Integer>();
         distributionTable = pDistributionTable;
-        pause = false;
         fitPopulationDistribution = new HashMap<Color,Vector<Float>>();
         generationCount = 0;
         currentPopulation = generatePopulation();
         recentlyAddFitIndividuals = new Vector<Integer>();
     }
 
+    public void firstFitPopulation(){
+        while(fitPopulation.isEmpty() || fitPopulation.size() <= 1){
+            PopulationControl();
+        }
+    }
     public Vector<Integer> generatePopulation(){
         Vector<Integer> population = new Vector<Integer>();
         Random rand = new Random();
@@ -45,12 +48,16 @@ public class GeneticAlgorithm implements ICONSTANTS {
             }
         }
     }
-
+    //FITNESS QUE SE ALEJA AL MAINCOLOR
+    public boolean isFitness(int individual, ColorNode colorNode){
+        return colorNode.getSimilarity(individual) >= APT_PERCENTAGE;
+    }
+/* FITNESS QUE SE ACERCA AL MAINCOLOR
     public boolean isFitness(int individual, ColorNode colorNode){
         if(colorNode.isMainColor(individual)){
             return true;
         }else return colorNode.getSimilarity(individual) <= APT_PERCENTAGE;
-    }
+    }*/
 
 
     public void printPopulation(Vector<Integer> pPopulation){
@@ -78,7 +85,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
         Random random = new Random();
         if(random.nextDouble() <= MUTATION_PERCENTAGE){
             int bitMask = BIT_MASK;
-            int shiftAmount = random.nextInt(CHROMOSOMES_BITS - 1);
+            int shiftAmount = random.nextInt(CHROMOSOMES_BITS);
             bitMask <<= shiftAmount;
             long bitValue = individual & bitMask;
             bitValue >>= shiftAmount;
@@ -95,7 +102,7 @@ public class GeneticAlgorithm implements ICONSTANTS {
         return individual;
     }
 
-    public Vector<Integer> newGeneration(){
+    public void newGeneration(){
         Random rand = new Random();
         int childQuantity = currentPopulation.size();
         evaluatePopulation(currentPopulation);
@@ -112,11 +119,10 @@ public class GeneticAlgorithm implements ICONSTANTS {
 
                 childQuantity--;
             }
+        }else{
+            currentPopulation.clear();
+            currentPopulation = generatePopulation();
         }
-        currentPopulation.clear();
-        currentPopulation = generatePopulation();
-        return currentPopulation;
-
     }
 
     public void PopulationControl(){
@@ -186,14 +192,6 @@ public class GeneticAlgorithm implements ICONSTANTS {
 
     public void setDistributionTable(DistributionTable distributionTable) {
         this.distributionTable = distributionTable;
-    }
-
-    public boolean isPause() {
-        return pause;
-    }
-
-    public void setPause(boolean pause) {
-        this.pause = pause;
     }
 
     public HashMap<Color, Vector<Float>> getFitPopulationDistribution() {

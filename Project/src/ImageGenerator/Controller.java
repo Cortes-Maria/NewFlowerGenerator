@@ -24,12 +24,15 @@ public class Controller {
         centerGenetic = new GeneticAlgorithm(centerDistributionTable);
         System.out.println("Population control: Petal");
         printMainColor(petalDistributionTable.getDistribution().getMainColor());
-        petalGenetic.PopulationControl();
+        //petalGenetic.PopulationControl();
+        petalGenetic.firstFitPopulation();
         System.out.println("Population control: Center");
         printMainColor(centerDistributionTable.getDistribution().getMainColor());
-        centerGenetic.PopulationControl();
+        //centerGenetic.PopulationControl();
+        centerGenetic.firstFitPopulation();
 
     }
+
     public void getDistributions(){
         for(Vector<Pixel> pixelVector : greedyColorAnalyser.getOptimalPixelsPETAL()){
             petalDistributionTable.insertDistribution(pixelVector);

@@ -1,13 +1,7 @@
 package GUI;
 
-import Genetic.DistributionTable;
-import Genetic.GeneticAlgorithm;
-import Greedy.GreedyColorAnalyser;
-import ImageGenerator.Controller;
-import ImageGenerator.Flower;
+import ImageGenerator.ImageGenerator;
 import ImageGenerator.Thumbnail;
-import ImageManagment.FlowerImage;
-import ImageManagment.Pixel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class ImageProcessor extends JPanel {
     private BufferedImage img;
@@ -169,8 +162,8 @@ public class ImageProcessor extends JPanel {
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setLocationRelativeTo(null);
 
-                    JPanel flower = new Flower();
-                    frame.add(flower);
+                    JPanel ImageGenerator = new ImageGenerator();
+                    frame.add(ImageGenerator);
                     frame.setVisible(true);
 
                     JFrame thumbNail = new JFrame("Thumbnail");
